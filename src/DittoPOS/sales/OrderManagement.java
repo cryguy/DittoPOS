@@ -1,4 +1,5 @@
-package DittoPOS.Helpers;
+package DittoPOS.sales;
+import DittoPOS.helpers.Json;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ TODO : Decide to keep and reuse or implement new "order management" // needs a l
  */
 
 
-class OrderManagement {
+public class OrderManagement {
 
 
     /**
@@ -41,7 +42,7 @@ class OrderManagement {
      * @return object of OrderManagement
      */
 
-    synchronized static OrderManagement getInstance() {
+    public synchronized static OrderManagement getInstance() {
         if (instance == null) { // check is it instance exist
             instance = new OrderManagement(); //if instance exist, create a new object for OrderManagement
         }
@@ -54,7 +55,7 @@ class OrderManagement {
      * if it is empty, remove the array list
      */
 
-    void CheckEmptyOrderAndRemove() { //Method to check if the order is empty
+    public void CheckEmptyOrderAndRemove() { //Method to check if the order is empty
         orders.removeIf((Order order) -> { // Remove the order list if the condition meet
             boolean ret = order.GetOrderProduct().isEmpty();
             if (ret)
@@ -84,7 +85,7 @@ class OrderManagement {
      * @return a Order object
      */
 
-    Order NewOrder() {
+    public Order NewOrder() {
         Order i = new Order(counter++);
         orders.add(i);
         return i;
@@ -124,7 +125,7 @@ class OrderManagement {
      * @param i order to delete
      */
 
-    void DeleteOrder(Order i) {
+    public void DeleteOrder(Order i) {
         orders.remove(i);
     }
 
@@ -134,7 +135,7 @@ class OrderManagement {
      * @param json string to restore from
      */
 
-    void setOrders(String json) {
+    public void setOrders(String json) {
         orders = Json.a.fromJson(json, new TypeToken<ArrayList<Order>>() {
         }.getType());
     }
@@ -144,7 +145,7 @@ class OrderManagement {
      * @return orders details from json to string
      */
 
-    String toJson() {
+    public String toJson() {
         return Json.a.toJson(orders);
     }
 
@@ -153,7 +154,7 @@ class OrderManagement {
      *show the orders in arraylist order
      * @return orders details in arraylist
      */
-    ArrayList<Order> getOrderArray() {
+    public ArrayList<Order> getOrderArray() {
         return this.orders;
     }
 }

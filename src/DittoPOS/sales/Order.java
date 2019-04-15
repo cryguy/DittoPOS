@@ -1,4 +1,7 @@
-package DittoPOS.Helpers;
+package DittoPOS.sales;
+import DittoPOS.products.Product;
+import DittoPOS.products.StockManagement;
+
 import java.util.ArrayList;
 
 
@@ -6,7 +9,7 @@ import java.util.ArrayList;
 TODO : Decide if we are keeping this, pretty sure we can just use a hashmap of products later on, easier to deal with
  */
 
-class Order {
+public class Order {
 
     /**
      * Identifier of order
@@ -114,7 +117,7 @@ class Order {
      *
      * @return orderList
      */
-    ArrayList<Product> GetOrderProduct() {
+    public ArrayList<Product> GetOrderProduct() {
         return this.orderList;
     }
 

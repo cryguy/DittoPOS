@@ -1,4 +1,7 @@
-package DittoPOS.Helpers;
+package DittoPOS.sales;
+
+import DittoPOS.helpers.Menu;
+import DittoPOS.helpers.input;
 
 /*
 TODO Return Price, Loop to find Price, After paid call Order Management and delete order
@@ -7,7 +10,7 @@ TODO : Decide if we want to continue using this or completely revamp and include
 
 
  */
-class Cashier {
+public class Cashier {
     private static double cash;
 
 
@@ -15,7 +18,7 @@ class Cashier {
      * Pay for order
      * @param i Order to pay for
      */
-    static void payForOrder(Order i){
+    public static void payForOrder(Order i){
         showOrder(i);
         double paid = Menu.getInput("Enter Money Paid - ", new input.DoubleInputGrabber());
         System.out.println("Change is : RM" + (paid-getPrice(i)));
@@ -26,7 +29,7 @@ class Cashier {
     /**
      * Getting the thing store in order array list and print out the details
      */
-    static void showOrders() {
+    public static void showOrders() {
         for (Order i : OrderManagement.getInstance().getOrderArray()) {
             System.out.println(i.toString());
 
@@ -36,7 +39,7 @@ class Cashier {
     /**
      * Prints out the current Cash
      */
-    static void getCash(){
+    public static void getCash(){
         System.out.println("Current Cash in cashier - " + cash);
     }
     /**

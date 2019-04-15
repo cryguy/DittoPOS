@@ -1,15 +1,17 @@
-package DittoPOS.Helpers;
+package DittoPOS.products;
+import DittoPOS.helpers.Json;
+import DittoPOS.reports.Prediction;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.*;
 
-
+// TODO : Do a complete rewrite/refactor of the whole thing, this seems to be unneeded in our use case
 /**
  * declare the variable of stockmanagement
  */
-class StockManagement {
+public class StockManagement {
     // StockManagement is an object that contains the array of Stocks
-    ArrayList<Stock> stocks = new ArrayList<>();
+    public ArrayList<Stock> stocks = new ArrayList<>();
     private ArrayList<String> stockNameForDayCounter = new ArrayList<>();
     private ArrayList<Integer> dayCounter = new ArrayList<>();
     private ArrayList<String> stockNameForUsageCount = new ArrayList<>();
@@ -25,7 +27,7 @@ class StockManagement {
      */
 
 
-    synchronized static StockManagement getInstance() {
+    public synchronized static StockManagement getInstance() {
         if(instance == null) {
             instance = new StockManagement();
         }
@@ -38,7 +40,7 @@ class StockManagement {
      * @return value of stocks
      */
 
-    boolean IsEmpty() {
+    public boolean IsEmpty() {
         return stocks.isEmpty();
     }
 
@@ -50,7 +52,7 @@ class StockManagement {
      * @param left number in stock
      */
 
-    void AddStock(String name, double price, int left) {
+    public void AddStock(String name, double price, int left) {
         stocks.add(new Stock(name, price, left));
     }
 
@@ -59,7 +61,7 @@ class StockManagement {
      *get the stocks details
      */
 
-    void PrintStocks(){
+    public void PrintStocks(){
         int x = 0;
         for (Stock i : stocks) {
             System.out.printf("%d     %20s %3d%n", ++x, i.getName(), i.getLeft());
@@ -73,6 +75,7 @@ class StockManagement {
      * @param product ingredient to reduce from
      */
     void ReduceQuantity(Product product) {
+        /*
         for (Ingredient i : product.getIngredients())
             for (Stock j : stocks)
                 if (j.GetName().equals(i.GetName())) {
@@ -80,6 +83,7 @@ class StockManagement {
                     j.reduceLeft(i.GetNeeded() * product.getQuantity());
                     break;
                 }
+                */
     }
 
     /**
@@ -88,7 +92,8 @@ class StockManagement {
      * @param numbertoadd number of stock to add
      */
 
-    void addStockQuantity(int index, int numbertoadd) {
+    public void addStockQuantity(int index, int numbertoadd) {
+
         this.getStock().get(index).addLeft(numbertoadd);
     }
 
@@ -186,16 +191,16 @@ class StockManagement {
         }
     }
 
-    void setStocks(String json) {
+    public void setStocks(String json) {
         instance = Json.a.fromJson(json, new TypeToken<StockManagement>() {
         }.getType());
     }
 
-    String toJson() {
+    public String toJson() {
         return Json.a.toJson(instance);
     }
 
-    void DeleteStock(Stock i) {
+    public void DeleteStock(Stock i) {
         stocks.remove(i);
     }
 

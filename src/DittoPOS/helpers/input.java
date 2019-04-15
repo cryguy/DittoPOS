@@ -1,8 +1,8 @@
-package DittoPOS.Helpers;
+package DittoPOS.helpers;
 
 import java.util.Scanner;
 
-class input {
+public class input {
     public interface InputGrabber<T> {
 
         boolean hasNextInput(Scanner scanner);
