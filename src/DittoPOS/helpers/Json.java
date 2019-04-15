@@ -1,5 +1,8 @@
-package DittoPOS.Helpers;
+package DittoPOS.helpers;
 
+import DittoPOS.products.ProductManagement;
+import DittoPOS.products.StockManagement;
+import DittoPOS.sales.OrderManagement;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -9,7 +12,7 @@ public class Json {
     /**
      * declare the datatype in class Json
      */
-    final static Gson a = new Gson();
+    public final static Gson a = new Gson();
     private final String productJson;
     private final String stockJson;
     private final String orderJson;

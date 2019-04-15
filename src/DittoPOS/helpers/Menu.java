@@ -1,10 +1,23 @@
-package DittoPOS.Helpers;
+package DittoPOS.helpers;
+
+import DittoPOS.products.Product;
+import DittoPOS.products.ProductManagement;
+import DittoPOS.products.StockManagement;
+import DittoPOS.reports.Prediction;
+import DittoPOS.sales.Cashier;
+import DittoPOS.sales.Order;
+import DittoPOS.sales.OrderManagement;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
 /*
 Depreciated TODO: Either refactor everything to fit our needs or just remove all together
+
+TODO : Add a keyboard handler to handle barcode scans , we need to be able to support barcode scanners that dont add the "return"/"enter" key -- we can also add shortcuts **
+TODO : Scrape the whole thing and start from scratch - refactoring this is too much work
+
  */
 
 public class Menu {
@@ -149,27 +162,13 @@ public class Menu {
                     String name = input.nextLine();
                     double price = getInput("Enter Price of " + name + " : ", new input.DoubleInputGrabber());
                     int inventoryselect;
-                    ArrayList<Ingredient> productIngredient = new ArrayList<>();
                     System.out.println("---- Stock List ----");
                     System.out.println("Num  Name       Left");
                     StockManagement.getInstance().PrintStocks();
                     System.out.println("0. Exit/Done");
                     // here exit whille loop
 
-
-                    outerloop:
-                    while (true) {
-                        do {
-                            inventoryselect = getInput("Enter index of ingredient - ", new input.IntegerInputGrabber());
-                            if (inventoryselect == 0)
-                                break outerloop;
-                        } while (inventoryselect - 1 < 0);
-                        int needed = getInput("Enter number of \"" + StockManagement
-                                .getInstance().stocks.get(inventoryselect - 1).getName() + " needed - ", new input.IntegerInputGrabber());
-                        productIngredient.add(new Ingredient(StockManagement.getInstance().stocks.get(inventoryselect - 1).getName(),
-                                StockManagement.getInstance().stocks.get(inventoryselect - 1).getPrice(), needed));
-                    }
-                    ProductManagement.products.add(new Product(name, price, productIngredient));
+                    ProductManagement.products.add(new Product(name, price));
                     break;
                 case 3:
 
@@ -379,7 +378,7 @@ public class Menu {
      * @param <T> type of input needed
      * @return input from user
      */
-    static <T> T getInput(String prompt, input.InputGrabber<T> grabber) {
+    public static <T> T getInput(String prompt, input.InputGrabber<T> grabber) {
         System.out.print(prompt);
         do {
             if (grabber.hasNextInput(input)) {

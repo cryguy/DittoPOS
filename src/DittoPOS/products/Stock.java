@@ -1,14 +1,17 @@
-package DittoPOS.Helpers;
+package DittoPOS.products;
 
 
 /*
 TODO : Decide if we want to keep this in, we can have a array of Stock Batches, we can have multiple batches of stock with diff expiry
  */
 
-class Stock extends Ingredient { // Stock is the child class of ingredient
+
+import java.util.Date;
+
+class Stock { // Stock is the child class of ingredient
 
     /*
-
+    TODO : Implement this properly
     Not sure if we want to use Inheritance here,
     might be better to just use the object because we might need to add this to Product?
     Or we can just make a method to return an Object of Ingredient?
@@ -16,20 +19,23 @@ class Stock extends Ingredient { // Stock is the child class of ingredient
     */
 
     private int left;
-
+    private Date expiry;
 
     /**
      * create a overloaded constructor to change the value in field name for store
-     * @param name name of stock to add
-     * @param price price of stock
+     * @param expiry expiry date of stock
      * @param left number that is in stock
      */
-    Stock(String name, double price, int left) {
-        super(name, price);
+    Stock(int left, Date expiry) {
         this.left = left;
+        this.expiry = expiry;
         //this.ingredient = ingredient;
     }
-
+    Stock(int left) {
+        this.left = left;
+        this.expiry = null;
+        //this.ingredient = ingredient;
+    }
 
     /**
      *get left of stock
@@ -41,22 +47,11 @@ class Stock extends Ingredient { // Stock is the child class of ingredient
 
 
     /**
-     *get name of ingredient from the parent class
-     * @return name of ingredient from parent class
-     */
-    String getName() {
-        return super.GetName();
-    }
-
-
-    /**
-     * get price of ingredient
+     * get expiry date
      *
-     * @return price of ingredient from parent class
+     * @return Date object with expiry
      */
-    double getPrice() {
-        return super.GetPrice();
-    }
+    Date getExpiry() { return this.expiry; }
 
 
     /**

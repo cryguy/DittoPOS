@@ -1,4 +1,5 @@
-package DittoPOS.Helpers;
+package DittoPOS.products;
+import DittoPOS.helpers.Json;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -8,14 +9,14 @@ import java.util.ArrayList;
  */
 
 
-class ProductManagement {
+public class ProductManagement {
 
     /**
      * declare variable of product management
      */
     // TODO : ADD method to add stock
     // StockManagement is an object that contains the array of Stocks
-    static ArrayList<Product> products = new ArrayList<>();
+    public static ArrayList<Product> products = new ArrayList<>();
     private static ArrayList<Product> availableProducts = new ArrayList<>();
     private static ProductManagement instance = null;
 
@@ -27,7 +28,7 @@ class ProductManagement {
      * @return the object of productManagement
      */
 
-    synchronized static ProductManagement getInstance() {
+    public synchronized static ProductManagement getInstance() {
         if(instance == null) {
             instance = new ProductManagement();
         }
@@ -39,7 +40,7 @@ class ProductManagement {
      *to print out the product that available
      * @return available product details
      */
-    ArrayList<Product> availableProducts() {
+    public ArrayList<Product> availableProducts() {
         updateAvailable();
         for (Product i : availableProducts)
             i.setQuantity(1);
@@ -56,6 +57,7 @@ class ProductManagement {
     private boolean productAvailable(ArrayList<Stock> stocks, Product product) {
         //boolean[] t = new boolean[product.getIngredients().size()];
         //int incre = 0;
+        /*
         for (Ingredient i : product.getIngredients())
             for (Stock j : stocks)
                 if (j.GetName().equals(i.GetName())) {
@@ -63,6 +65,7 @@ class ProductManagement {
                         return false;
                     break; // break out of 1 for loop as we found it already, don't need to go to the next if we found it
                 }
+                */
         return true;
     }
 
@@ -71,7 +74,7 @@ class ProductManagement {
      *print the product that have been ordered
      */
 
-    void PrintProduct() {
+    public void PrintProduct() {
         int x = 0;
         for (Product i : products) {
             System.out.printf("%d\t %s\t\t  %.2f%n", ++x, i.getName(), i.getPrice());
@@ -99,14 +102,14 @@ class ProductManagement {
      * serialize the current object into json
      * @return String of json
      */
-    String toJson() {
+    public String toJson() {
         return Json.a.toJson(products);
     }
 
     /**
      * Updates the current available products
      */
-    void updateAvailable() {
+    public void updateAvailable() {
         for (Product i : availableProducts)
             i.setQuantity(1);
         availableProducts = showAllowedProduct(StockManagement.getInstance().stocks, products);
@@ -116,7 +119,7 @@ class ProductManagement {
      * restore the object using json data
      * @param json the input of json string
      */
-    void setProducts(String json) {
+    public void setProducts(String json) {
         products = Json.a.fromJson(json, new TypeToken<ArrayList<Product>>() {
         }.getType());
     }
@@ -125,7 +128,7 @@ class ProductManagement {
      * Delete Product from product list
      * @param i product to delete
      */
-    void DeleteProduct(Product i) {
+    public void DeleteProduct(Product i) {
         products.remove(i);
         updateAvailable();
     }

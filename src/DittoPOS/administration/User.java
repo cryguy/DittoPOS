@@ -1,4 +1,4 @@
-package DittoPOS.Helpers;
+package DittoPOS.administration;
 
 public class User {
 

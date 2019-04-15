@@ -1,4 +1,4 @@
-package DittoPOS.Helpers;
+package DittoPOS.reports;
 import com.github.signaflo.timeseries.TimePeriod;
 import com.github.signaflo.timeseries.TimeSeries;
 import com.github.signaflo.timeseries.Ts;
@@ -12,8 +12,7 @@ import java.util.ArrayList;
 Not sure if we want to keep this in
  */
 
-class Prediction {
-
+public class Prediction {
 
     private final ArimaOrder modelOrder = ArimaOrder.order(0, 1, 1, 0, 1, 1);
     private ArrayList<String> TimeSeriesArrayName = new ArrayList<>();
@@ -31,7 +30,7 @@ class Prediction {
      * @return object of Prediction
      */
 
-    synchronized static Prediction getInstance() {
+    public synchronized static Prediction getInstance() {
         if (instance == null) {
             instance = new Prediction();
         }
@@ -43,7 +42,7 @@ class Prediction {
      * @param name name of data
      * @param data the actual data to do calculations on
      */
-    void addData(String name, double[] data) {
+    public void addData(String name, double[] data) {
         TimeSeriesArrayName.add(name);
         TimeSeries.add(Ts.newWeeklySeries(data));
     }
@@ -74,7 +73,7 @@ class Prediction {
     /**
      *print out the prediction of the ingredient that need to prepare
      */
-    void printPredictions() {
+    public void printPredictions() {
         runPrediction();
         System.out.println("---------- Prediction ----------");
         System.out.println("Name       Prediction LOW-UP-MID");
@@ -122,7 +121,7 @@ class Prediction {
      * @param name name of stock to get prediction of
      * @return an array of integer
      */
-    int[] getPrediction(String name) {
+    public int[] getPrediction(String name) {
         int[] a = new int[3];
         if (forecastContainsName(name)) // check if it exists in the map, if not we will crash
         {
