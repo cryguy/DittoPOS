@@ -28,6 +28,7 @@ public class Main extends Application {
         Json.fromString(json).restoreAll();
         Menu menu = new Menu();
         menu.mainMenu();
+        //HI jacky was here
         // launch(args);
     }
 }
