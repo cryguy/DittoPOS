@@ -14,6 +14,10 @@ public class Tax {
         this.prepost = 1;
     }
 
+    /**
+     * typical setters and getters
+     * @return
+     */
     public String getName() {
         return name;
     }
@@ -31,6 +35,8 @@ public class Tax {
     }
 
     public void setPrepost(int prepost){ this.prepost = prepost; }
+
+    public int getPrepost(){return this.prepost;}
 
 
 
