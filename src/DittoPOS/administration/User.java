@@ -17,6 +17,7 @@ public class User {
     private String image;
     private Permissions permission;
     private String password_hash;
+    private int listid;
     
     
     public String getName() {
@@ -147,7 +148,7 @@ public class User {
         return (password_hash.equals(testhash)); // implement hashing and proper checking
         
     }
-    
+   
 }
 
 
