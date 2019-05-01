@@ -9,8 +9,6 @@ TODO : BUG Jacky for tax bracket implementation
 
 TODO : ADD reference/shortname and Barcode!
  */
-
-
 public class Product implements Cloneable {
 
     private String name;
