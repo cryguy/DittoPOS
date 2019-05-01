@@ -10,7 +10,7 @@ public class UserManagement {
      */
 	
 	HashMap<String,User> users = new HashMap<String,User>();
-
+ 
     private static UserManagement ourInstance = new UserManagement();
 
     private UserManagement getInstance() {
