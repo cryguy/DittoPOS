@@ -8,18 +8,16 @@ TODO : Decide if we want to keep this in, we can have a array of Stock Batches, 
 
 import java.util.Date;
 
-class Stock { // Stock is the child class of ingredient
-
+class Stock {
     /*
-    TODO : Implement this properly
-    Not sure if we want to use Inheritance here,
-    might be better to just use the object because we might need to add this to Product?
-    Or we can just make a method to return an Object of Ingredient?
+    TODO: Allow negative stock
+     */
 
-    */
+
 
     private int left;
     private Date expiry;
+    private int minCount=0;
 
     /**
      * create a overloaded constructor to change the value in field name for store
@@ -48,10 +46,33 @@ class Stock { // Stock is the child class of ingredient
 
     /**
      * get expiry date
-     *
      * @return Date object with expiry
      */
     Date getExpiry() { return this.expiry; }
+
+    /**
+     * get minimum count
+     * @return
+     */
+    int getMinCount(){
+        return this.minCount;
+    }
+
+    /**
+     * set minimum count
+     * @param min
+     */
+    void setMinCount(int min){
+        this.minCount = min;
+    }
+
+    /**
+     * check if existing stock is below minimum
+     * @return
+     */
+    boolean islow(){
+        return this.left<=this.minCount;
+    }
 
 
     /**

@@ -4,7 +4,7 @@ package DittoPOS.products;
 /*
 We can either heavily Change this around or idk?
 
-TODO : Tax brackets - do we implement them in product management or here directly? We can have a tax management page or sumthin.
+TODO : Tax brackets - do we implement them in product management or here directly? We can have a tax management page or sumthin. DONE
 TODO : BUG Jacky for tax bracket implementation
 
 TODO : ADD reference/shortname and Barcode!
