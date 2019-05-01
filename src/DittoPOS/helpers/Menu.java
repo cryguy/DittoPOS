@@ -364,7 +364,7 @@ public class Menu {
      *add the stock by prompt user to enter the stock details
      */
     private void addaStock() {
-        System.out.print("Enter Name of Item : ");
+        System.out.print("Enter Name of Lines : ");
         String name = input.nextLine();
         double price = getInput("Enter Price of " + name + " : ", new input.DoubleInputGrabber());
         int left = getInput("Enter Number of " + name + " in stock : ", new input.IntegerInputGrabber());
