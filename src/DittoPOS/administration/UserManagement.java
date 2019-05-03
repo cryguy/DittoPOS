@@ -1,5 +1,6 @@
 package DittoPOS.administration;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class UserManagement {
@@ -57,15 +58,16 @@ public class UserManagement {
     	users.put(name,new User(name,password));
     }
     
+    Iterator<String> iterator = users.keySet().iterator();
+    
     private void DeleteUser(String name) {
-    	for(String i : users.keySet()) {
-    		if(i==name) {
-    			users.remove(name);
-    		}
+    	while(iterator.hasNext()){ 
+    		String user = iterator.next(); 
+    			if(user.contains(name)){ 
+    				iterator.remove(); 
+    			} 
     	}
     }
-    
-    
 }
 
 
