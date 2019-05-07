@@ -10,6 +10,7 @@ public class Lines {
     boolean isBundle = false;
     private double price;
     private int quantity;
+    private String name;
     // Add tax
 
     /*Lines( product, int quantity) {

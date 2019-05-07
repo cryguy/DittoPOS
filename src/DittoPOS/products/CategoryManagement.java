@@ -1,4 +1,4 @@
-import DittoPOS.Category;
+package DittoPOS.products;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -12,5 +12,21 @@ public class CategoryManagement {
             instance = new CategoryManagement();
         }
         return instance;
+    }
+    void addCategory(String name)
+    {
+        categories.put(name,new Category());
+    }
+    Category getCategory(String name)
+    {
+        return categories.get(name);
+    }
+    boolean deleteCategory(String name)
+    {
+        return categories.remove(name,categories.get(name));
+    }
+    HashMap allCategory()
+    {
+        return this.categories;
     }
 }

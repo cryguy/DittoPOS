@@ -3,7 +3,7 @@ package DittoPOS.products;
 public class Tax {
     private String name;
     double percentage;
-    int prepost; // 0 for before, 1 for after service charge
+    boolean prepost; // 0 for before, 1 for after service charge
 
     //TODO : Find stuff that needs implementing?
     //TODO : Implement this properly
@@ -11,7 +11,7 @@ public class Tax {
     Tax(String name, double percentage){
         this.name = name;
         this.percentage = percentage;
-        this.prepost = 1;
+        this.prepost = true;
     }
 
     /**
@@ -34,9 +34,9 @@ public class Tax {
         this.percentage = percentage;
     }
 
-    public void setPrepost(int prepost){ this.prepost = prepost; }
+    public void setPrepost(boolean prepost){ this.prepost = prepost; }
 
-    public int getPrepost(){return this.prepost;}
+    public boolean getPrepost(){return this.prepost;}
 
 
 

@@ -35,7 +35,7 @@ public class Product implements Cloneable {
      * @param canExpire
      */
 
-    public Product(String name, double price, boolean canExpire) {
+    Product(String name, double price, boolean canExpire) {
         this.name = name;
         this.price = price;
         this.canExpire = canExpire;
