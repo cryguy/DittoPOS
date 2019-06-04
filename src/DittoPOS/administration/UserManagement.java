@@ -10,15 +10,19 @@ public class UserManagement {
     TODO : Implement proper User Management. TBD
      */
 	 
-	HashMap<String,User> users = new HashMap<String,User>();
- 
-    private static UserManagement ourInstance = new UserManagement();
+	public HashMap<String,User> users = new HashMap<String,User>();
 
-    private UserManagement getInstance() {
-    	
-        return ourInstance;
-    }
-    
+
+	private static UserManagement instance = null;
+
+	public synchronized static UserManagement getInstance() {
+		if(instance == null) {
+			instance = new UserManagement();
+		}
+		return instance;
+	}
+
+
     private UserManagement() {
     	
     }
@@ -46,15 +50,15 @@ public class UserManagement {
     	}
     }
     
-    private void addUser(String name,String password,Permissions perms,String image) {
+    public void addUser(String name,String password,Permissions perms,String image) {
     	users.put(name,new User(name,password,perms,image));
     }
     
-    private void addUser(String name,String password,Permissions perms) {
+    void addUser(String name,String password,Permissions perms) {
     	users.put(name,new User(name,password,perms));
     }
     
-    private void addUser(String name,String password) {
+    void addUser(String name,String password) {
     	users.put(name,new User(name,password));
     }
     

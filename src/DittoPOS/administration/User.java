@@ -18,8 +18,12 @@ public class User {
     private Permissions permission;
     private String password_hash;
     private int listid;
-    
-    
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
     public String getName() {
         return name;
     }
@@ -56,12 +60,8 @@ public class User {
     	setName(name);
     	setPermission(perms);
     	setImage(image);
-    	if(checkPassword(password)) {
-    		setPassword(password);
-    	}
-    	else {
-    		System.out.println("Invalid Password");
-    	}
+    	setPassword(password);
+
     }
 
     public User (String name,String password, Permissions perms)
@@ -69,77 +69,68 @@ public class User {
 
     	setName(name);
     	setPermission(perms);
-    	if(checkPassword(password)) {
-    		setPassword(password);
-    	}
-    	else {
-    		System.out.println("Invalid Password");
-    	}
+    	setPassword(password);
     }
 
     public User (String name,String password)
     {
 
     	setName(name);
-    	if(checkPassword(password)) {
-    		setPassword(password);
-    	}
-    	else {
-    		System.out.println("Invalid Password");
-    	}
+    	setPassword(password);
+
     }
 
-        static byte[] concat(byte[]...arrays)
+    static byte[] concat(byte[]...arrays)
+    {
+        // Determine the length of the result array
+        int totalLength = 0;
+        for (int i = 0; i < arrays.length; i++)
         {
-            // Determine the length of the result array
-            int totalLength = 0;
-            for (int i = 0; i < arrays.length; i++)
-            {
-                totalLength += arrays[i].length;
-            }
-
-            // create the result array
-            byte[] result = new byte[totalLength];
-
-            // copy the source arrays into the result array
-            int currentIndex = 0;
-            for (int i = 0; i < arrays.length; i++)
-            {
-                System.arraycopy(arrays[i], 0, result, currentIndex, arrays[i].length);
-                currentIndex += arrays[i].length;
-            }
-
-            return result;
+            totalLength += arrays[i].length;
         }
 
-        static String passwordToHash(String password, String saltstr)
+        // create the result array
+        byte[] result = new byte[totalLength];
+
+        // copy the source arrays into the result array
+        int currentIndex = 0;
+        for (int i = 0; i < arrays.length; i++)
         {
-            try {
-                Random r = new SecureRandom();
-                byte[] salt = new byte[20];
-                r.nextBytes(salt);
-
-                if (!saltstr.isEmpty())
-                    salt = toBytes(saltstr);
-                MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-                return new String(toBase64(salt)) + "," + toBase64(digest.digest(concat(password.getBytes(),salt)));
-            } catch (NoSuchAlgorithmException e) {
-                return null;
-            }
+            System.arraycopy(arrays[i], 0, result, currentIndex, arrays[i].length);
+            currentIndex += arrays[i].length;
         }
 
-        static byte[] toBytes(String base64){
-            return Base64.getDecoder().decode(base64);
+        return result;
+    }
+
+    static String passwordToHash(String password, String saltstr)
+    {
+        try {
+            Random r = new SecureRandom();
+            byte[] salt = new byte[20];
+            r.nextBytes(salt);
+
+            if (!saltstr.isEmpty())
+                salt = toBytes(saltstr);
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            return new String(toBase64(salt)) + "," + toBase64(digest.digest(concat(password.getBytes(),salt)));
+        } catch (NoSuchAlgorithmException e) {
+            return null;
         }
+    }
+
+    static byte[] toBytes(String base64){
+        return Base64.getDecoder().decode(base64);
+    }
+
+    static String toBase64(byte[] bytes)
+    {
+        return Base64.getEncoder().encodeToString(bytes);
+    }
+
         
-        static String toBase64(byte[] bytes)
-        {
-            return Base64.getEncoder().encodeToString(bytes);
-        }
-
-        
-    boolean checkPassword(String password)
+    public boolean checkPassword(String password)
     {
     	
     	String salt = password_hash.split(",")[0];

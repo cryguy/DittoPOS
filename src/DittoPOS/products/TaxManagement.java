@@ -28,7 +28,7 @@ public class TaxManagement {
 
     }
 
-    private void editTax(String name,double percentage,int prepost){
+    private void editTax(String name,double percentage,boolean prepost){
 
         for (Tax i : tax){
             if (i.getName().equals(name)) {
