@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8"
+            fx:controller="DittoPOS.administration.User">
+    <children>
+        <AnchorPane prefHeight="103.0" prefWidth="1280.0" style="-fx-border-color: gray;">
+            <children>
+                <Text layoutX="1083.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="4:20 20th April 1337">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="565.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME TO DITTO"
+                      wrappingWidth="336.220703125" AnchorPane.topAnchor="62.0">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutY="152.0" prefHeight="648.0" prefWidth="1280.0" style="-fx-border-color: grey;">
+            <children>
+                <ImageView fitHeight="250.0" fitWidth="247.0" layoutX="582.0" layoutY="116.0" pickOnBounds="true"
+                           preserveRatio="true"/>
+                <Circle fill="DODGERBLUE" layoutX="758.0" layoutY="237.0" radius="121.0" stroke="BLACK"
+                        strokeType="INSIDE" style="-fx-fill: grey;"/>
+                <SplitPane dividerPositions="0.5" prefHeight="648.0" prefWidth="277.0">
+                    <items>
+                        <ListView prefHeight="200.0" prefWidth="200.0"/>
+                        <ScrollBar orientation="VERTICAL"/>
+                    </items>
+                </SplitPane>
+                <TextField alignment="TOP_CENTER" layoutX="652.0" layoutY="373.0" text="Username"/>
+                <TextField alignment="CENTER" layoutX="653.0" layoutY="412.0" text="Password"/>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
