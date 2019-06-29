@@ -34,9 +34,17 @@ public class SalesController {
         private Text timenow;
         @FXML
         private StackPane stackroot;
+
+        @FXML
+        private VBox sidebarmenu;
+
+        @FXML
+        private Button backbtn;
+
+
         @FXML
         public void initialize() {
-
+            hideMenu(sidebarmenu);
             timenow.setTextAlignment(TextAlignment.RIGHT);
             DateFormat timeFormat = new SimpleDateFormat( "dd/MM/YYYY HH:mm:ss" );
             final Timeline timeline = new Timeline(
@@ -50,40 +58,17 @@ public class SalesController {
             timeline.setCycleCount( Animation.INDEFINITE );
             timeline.play();
 
-            HBox menubar = new HBox();
-            VBox menu = new VBox();
-            menu.setStyle("-fx-background-color: blue;");
-            menu.setFillWidth(true);
 
-            menubar.setOnMouseClicked((MouseEvent evt) ->
-                hideMenu(menubar)
+            sidebarmenu.setOnMouseClicked((MouseEvent evt) ->
+                hideMenu(sidebarmenu)
             );
 
-            Button backBtn = new Button("Left Arrow");
-            backBtn.setPrefWidth(100);
-
-            backBtn.setOnAction(event ->
-                        hideMenu(menubar)
+            backbtn.setOnAction(event ->
+                    hideMenu(sidebarmenu)
             );
 
-
-            Button infoBtn = new Button("Info");
-            infoBtn.setPrefWidth(100);
-            infoBtn.getStyleClass().add("custom-menu-button");
-            Button newBtn = new Button("New");
-            newBtn.setPrefWidth(100);
-            newBtn.getStyleClass().add("custom-menu-button");
-            Button openBtn = new Button("Open");
-            openBtn.setPrefWidth(100);
-            Button usrBtn = new Button("Users");
-            usrBtn.setPrefWidth(100);
-
-            openBtn.getStyleClass().add("custom-menu-button");
-            menu.getChildren().addAll(backBtn, infoBtn, newBtn, openBtn, usrBtn);
-            VBox.setVgrow(infoBtn, Priority.ALWAYS);
-            menubar.getChildren().add(menu);
             sidebar.setOnAction(event ->
-                showMenu(menubar)
+                showMenu(sidebarmenu)
             );
 
             CategoryManagement.getInstance().addCategory("Hello");
@@ -119,7 +104,7 @@ public class SalesController {
         catselected.setStyle("-fx-background-color: grey");
         //System.out.println(x.getWidth());
     }
-    private void showMenu(HBox menubar) {
+    private void showMenu(VBox menubar) {
         stackroot.getChildren().add(menubar);
         FadeTransition hideEditorRootTransition = new FadeTransition(Duration.millis(500), root);
         hideEditorRootTransition.setFromValue(1.0);
@@ -132,7 +117,7 @@ public class SalesController {
         showFileRootTransition.play();
     }
 
-    private void hideMenu(HBox menubar) {
+    private void hideMenu(VBox menubar) {
         FadeTransition hideFileRootTransition = new FadeTransition(Duration.millis(500), menubar);
         hideFileRootTransition.setFromValue(1.0);
         hideFileRootTransition.setToValue(0.0);

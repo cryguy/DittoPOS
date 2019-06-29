@@ -18,8 +18,10 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("SalesScreen.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 1280, 800));
-        //primaryStage.setResizable(false);
+        primaryStage.setResizable(false);
         System.out.println("[+] Primary Stage initialized, Showing Login");
+
+        primaryStage.setWidth(1280);
         primaryStage.show();
         System.out.println(primaryStage.getWidth() + " " + primaryStage.getHeight());
     }
