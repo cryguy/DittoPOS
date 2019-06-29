@@ -75,8 +75,11 @@ public class SalesController {
             newBtn.getStyleClass().add("custom-menu-button");
             Button openBtn = new Button("Open");
             openBtn.setPrefWidth(100);
+            Button usrBtn = new Button("Users");
+            usrBtn.setPrefWidth(100);
+
             openBtn.getStyleClass().add("custom-menu-button");
-            menu.getChildren().addAll(backBtn,infoBtn, newBtn, openBtn);
+            menu.getChildren().addAll(backBtn, infoBtn, newBtn, openBtn, usrBtn);
             VBox.setVgrow(infoBtn, Priority.ALWAYS);
             menubar.getChildren().add(menu);
             sidebar.setOnAction(event ->
