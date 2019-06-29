@@ -16,7 +16,11 @@
             <AnchorPane layoutX="949.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity">
               <children>
                 <Separator layoutX="-4.0" layoutY="355.0" prefHeight="5.0" prefWidth="319.0" />
-                <ListView layoutX="-4.0" prefHeight="206.0" prefWidth="292.0" />
+                <ScrollPane id="ScrollPane" fitToWidth="true" layoutX="-4.0" layoutY="0.0" prefViewportHeight="206.0" prefViewportWidth="292.0" prefWidth="309.0">
+                  <content>
+                    <VBox fx:id="listReceipt" prefHeight="206.0" prefWidth="308.0" />
+                  </content>
+                </ScrollPane>
                 <GridPane layoutX="-8.0" layoutY="373.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="300.0">
                   <children>
                     <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="1" GridPane.rowIndex="1">
@@ -57,7 +61,6 @@
                     <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                 </GridPane>
-                <Slider layoutX="298.0" orientation="VERTICAL" prefHeight="206.0" prefWidth="14.0" />
                 <TextField layoutX="-4.0" layoutY="279.0" prefHeight="68.0" prefWidth="319.0" />
                 <HBox layoutX="-4.0" layoutY="212.0" spacing="5.0">
                   <children>

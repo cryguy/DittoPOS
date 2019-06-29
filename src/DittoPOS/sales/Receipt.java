@@ -1,14 +1,15 @@
 package DittoPOS.sales;
 
 import DittoPOS.products.SaleProduct;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Receipt {
-    static HashMap<SaleProduct, Integer> resit = new HashMap<>();
+    HashMap<SaleProduct, Integer> resit = new HashMap<>();
 
-    public static HashMap<SaleProduct, Integer> getResit() {
+    public HashMap<SaleProduct, Integer> getResit() {
         return resit;
     }
 
@@ -23,6 +24,8 @@ public class Receipt {
     public Integer getQuantity(SaleProduct saleProduct) {
         return resit.getOrDefault(saleProduct, 0);
     }
+
+
 }
 
 

@@ -4,6 +4,7 @@ public class SaleProduct {
 
     private Product product;
 
+
     //private HashMap<String, Stock> barcodeStock = new HashMap<>();
     private int stock;
     private Tax tax;

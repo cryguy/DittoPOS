@@ -1,8 +1,7 @@
 package DittoPOS.Controllers;
 
-import DittoPOS.administration.User;
-import DittoPOS.administration.UserManagement;
 import DittoPOS.products.CategoryManagement;
+import DittoPOS.sales.ReceiptManagement;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -14,21 +13,21 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SalesController {
-    
+        private static Button catselected = null;
         @FXML
         private VBox categorybox;
         @FXML
         private Button sidebar;
 
+        @FXML
+        private VBox listReceipt;
         @FXML
         private AnchorPane root;
         @FXML
@@ -90,25 +89,33 @@ public class SalesController {
             CategoryManagement.getInstance().addCategory("category do you work lalalalallalaallaaa");
             //
             CategoryManagement.getInstance().allCategory().forEach((o, o2) -> {
-                System.out.println(o.toString());
                 Button button = new Button((String)o);
                 button.setMinHeight(67.00);
                 button.setMinWidth(163.00);
-               // button.setOnAction(event -> onActionClick(event,i));  // set action of button to the onactionclick button.
+                button.setOnAction(event -> catClick(event,(String)o));  // set action of button to the onactionclick button.
                 categorybox.getChildren().add(button);
 
             });
+                AtomicInteger i= new AtomicInteger(1);
+                    ReceiptManagement.getInstance().getCurrentReceipt().getResit().forEach(
+                    (saleProduct, integer) ->
+                    {
+                        Button button = new Button(i.getAndIncrement() + " " + saleProduct.getProduct().getName() + (saleProduct.getProduct().getPrice()*integer));
+                        button.setMinHeight(67.00);
+                        button.setMinWidth(163.00);
+                        listReceipt.getChildren().add(button);
+                    });
 
-            @FXML
-            protected void onActionClick(ActionEvent event, User user){
-                usernameField.setText(user.getCategory());
-                Button x = (Button)event.getSource();
-                System.out.println(x.getWidth());
-            }
 
 
         }
-
+    protected void catClick(ActionEvent event, String categories){
+        if (catselected != null)
+            catselected.setStyle("");
+        catselected = (Button) event.getSource();
+        catselected.setStyle("-fx-background-color: grey");
+        //System.out.println(x.getWidth());
+    }
     private void showMenu(HBox menubar) {
         stackroot.getChildren().add(menubar);
         FadeTransition hideEditorRootTransition = new FadeTransition(Duration.millis(500), root);
