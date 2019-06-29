@@ -2,6 +2,7 @@ package DittoPOS.Controllers;
 
 import DittoPOS.administration.User;
 import DittoPOS.administration.UserManagement;
+import DittoPOS.products.CategoryManagement;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -22,6 +23,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 public class SalesController {
+    
+        @FXML
+        private VBox categorybox;
         @FXML
         private Button sidebar;
 
@@ -79,6 +83,29 @@ public class SalesController {
             sidebar.setOnAction(event ->
                 showMenu(menubar)
             );
+
+            CategoryManagement.getInstance().addCategory("Hello");
+            CategoryManagement.getInstance().addCategory("this");
+            CategoryManagement.getInstance().addCategory("is");
+            CategoryManagement.getInstance().addCategory("category do you work lalalalallalaallaaa");
+            //
+            CategoryManagement.getInstance().allCategory().forEach((o, o2) -> {
+                System.out.println(o.toString());
+                Button button = new Button((String)o);
+                button.setMinHeight(67.00);
+                button.setMinWidth(163.00);
+               // button.setOnAction(event -> onActionClick(event,i));  // set action of button to the onactionclick button.
+                categorybox.getChildren().add(button);
+
+            });
+
+            @FXML
+            protected void onActionClick(ActionEvent event, User user){
+                usernameField.setText(user.getCategory());
+                Button x = (Button)event.getSource();
+                System.out.println(x.getWidth());
+            }
+
 
         }
 

@@ -13,11 +13,11 @@ public class CategoryManagement {
         }
         return instance;
     }
-    void addCategory(String name)
+    public void addCategory(String name)
     {
         categories.put(name,new Category());
     }
-    Category getCategory(String name)
+    public Category getCategory(String name)
     {
         return categories.get(name);
     }
@@ -25,7 +25,7 @@ public class CategoryManagement {
     {
         return categories.remove(name,categories.get(name));
     }
-    HashMap allCategory()
+    public HashMap allCategory()
     {
         return this.categories;
     }
