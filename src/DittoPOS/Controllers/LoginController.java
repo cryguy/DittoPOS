@@ -39,12 +39,13 @@ public class LoginController {
                         ("Login Failed!")); // wrong password
             }
         }
-
 }
 
 @FXML
     protected void onActionClick(ActionEvent event, User user){
     usernameField.setText(user.getName());
+    Button x = (Button)event.getSource();
+    System.out.println(x.getWidth());
 }
     @FXML
     public void initialize() {
@@ -57,7 +58,7 @@ public class LoginController {
         for (User i: UserManagement.getInstance().users.values()) {
             Button button = new Button(i.toString());
             button.setMinHeight(67.00);
-            button.setMinWidth(334.00);
+            button.setMinWidth(329.00);
             button.setOnAction(event -> onActionClick(event,i));  // set action of button to the onactionclick button.
             userList.getChildren().add(button);
         }

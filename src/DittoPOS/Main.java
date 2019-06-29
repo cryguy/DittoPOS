@@ -15,10 +15,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("SalesScreen.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 1200, 800));
+        primaryStage.setScene(new Scene(root, 1280, 800));
+        //primaryStage.setResizable(false);
+        System.out.println("[+] Primary Stage initialized, Showing Login");
         primaryStage.show();
+        System.out.println(primaryStage.getWidth() + " " + primaryStage.getHeight());
     }
 
     public static void main(String[] args) {
