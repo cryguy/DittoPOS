@@ -137,4 +137,5 @@ public class SalesController {
         stackroot.getChildren().remove(menubar);
         System.out.println("removed menu");
     }
+
 }

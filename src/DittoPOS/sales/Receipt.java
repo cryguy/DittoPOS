@@ -1,27 +1,28 @@
 package DittoPOS.sales;
 
+import DittoPOS.products.SaleProduct;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Receipt {
-    static ArrayList<Lines> lines = new ArrayList<>();
+    static HashMap<SaleProduct, Integer> resit = new HashMap<>();
 
-    void addLines(Lines line) {
-        lines.add(line);
+    public static HashMap<SaleProduct, Integer> getResit() {
+        return resit;
     }
 
-    private boolean removeLine(int index) {
-        return lines.remove(lines.get(index));
-        //make sure to refresh
+    void addItem(SaleProduct saleProduct, int quantity) {
+        resit.put(saleProduct, quantity);
     }
 
-    public Lines getLine(int index) {
-        return lines.get(index);
+    private void removeItem(SaleProduct saleProduct) {
+        resit.remove(saleProduct);
     }
 
-    ArrayList<Lines> listLine() {
-        return lines;
+    public Integer getQuantity(SaleProduct saleProduct) {
+        return resit.getOrDefault(saleProduct, 0);
     }
-
-
 }
+
+
