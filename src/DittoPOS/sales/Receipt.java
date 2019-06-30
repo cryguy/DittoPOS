@@ -8,11 +8,13 @@ import java.util.HashMap;
 public class Receipt {
     HashMap<SaleProduct, Integer> resit = new HashMap<>();
 
-    public Receipt(HashMap<SaleProduct, Integer> resit) {
-        this.resit = (HashMap<SaleProduct, Integer>) resit.clone();
+
+    @SuppressWarnings("unchecked")
+    Receipt(HashMap<SaleProduct, Integer> resit) {
+        this.resit = (HashMap<SaleProduct, Integer>) resit.clone();// we are cloning itself into the same type, so dont care about the warning.
     }
 
-    public Receipt() {
+    Receipt() { // default initializer
     }
     public HashMap<SaleProduct, Integer> getResit() {
         return resit;
@@ -23,13 +25,8 @@ public class Receipt {
 
         resit.put(ProductManagement.getInstance().getProduct(saleProduct.getProduct().getName()), resit.getOrDefault(ProductManagement.getInstance().getProduct(saleProduct.getProduct().getName()), 0) + quantity); // add quantity to product
         if (resit.get(ProductManagement.getInstance().getProduct(saleProduct.getProduct().getName())) <= 0)
-            resit.remove(saleProduct);
+            resit.remove(saleProduct); // remove item if its 0
     }
-
-    private void removeItem(SaleProduct saleProduct) {
-        resit.remove(saleProduct);
-    }
-
 
 }
 

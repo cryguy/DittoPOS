@@ -102,7 +102,7 @@
                                 <TextField fx:id="price" layoutX="130.0" layoutY="80.0" maxHeight="-Infinity"
                                            maxWidth="-Infinity" prefHeight="39.0" prefWidth="135.0"
                                            GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                                <TextField fx:id="prodname" layoutX="130.0" layoutY="28.0" maxHeight="-Infinity"
+                                <TextField fx:id="prodName" layoutX="130.0" layoutY="28.0" maxHeight="-Infinity"
                                            maxWidth="-Infinity" prefHeight="39.0" prefWidth="376.0"
                                            GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                 <Label layoutX="16.0" layoutY="39.0" text="Name" GridPane.rowIndex="1"/>

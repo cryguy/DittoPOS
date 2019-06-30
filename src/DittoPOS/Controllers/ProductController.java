@@ -77,7 +77,7 @@ public class ProductController {
     private Button save;
 
     @FXML
-    private TextField prodname;
+    private TextField prodName;
 
     @FXML
     private TextField barcode;
@@ -88,16 +88,18 @@ public class ProductController {
     @FXML
     private Button cashFlowBtn;
 
-    void refreshProduct() {
+    private void refreshProduct() {
         productList.getChildren().clear();
         ProductManagement.getInstance().getProducts().forEach(saleProduct -> {
             Button button = new Button(saleProduct.getProduct().getName());
             button.setMinHeight(60);
             button.setMinWidth(400);
 
+
+            // event handlers for the button
             button.setOnMouseClicked(event -> {
                 this.barcode.setText(saleProduct.getProduct().getBarcode());
-                this.prodname.setText(saleProduct.getProduct().getName());
+                this.prodName.setText(saleProduct.getProduct().getName());
                 this.price.setText(Double.toString(saleProduct.getProduct().getPrice()));
             });
             productList.getChildren().add(button);
@@ -109,13 +111,11 @@ public class ProductController {
         username.setText(UserManagement.getInstance().loggedin.getName());
         hideMenu(sidebarMenu);
         timeNow.setTextAlignment(TextAlignment.RIGHT);
-        DateFormat timeFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
+        DateFormat timeFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss"); // format the date in dd/mm/yy hh:mm:ss
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.millis(500),
-                        event -> {
-                            timeNow.setText(timeFormat.format(System.currentTimeMillis()));
-                        }
+                        event -> timeNow.setText(timeFormat.format(System.currentTimeMillis()))
                 )
         );
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -148,40 +148,38 @@ public class ProductController {
         cashFlowBtn.setOnMouseClicked(event -> Main.changeScene("CashFlow.fxml"));
         add.setOnMouseClicked(event -> {
             try {
-                if (ProductManagement.getInstance().getProduct(prodname.getText()) != null) {
+                if (ProductManagement.getInstance().getProduct(prodName.getText()) != null) {
                     throw new NullPointerException("");
                 }
 
-                ProductManagement.getInstance().addProduct(prodname.getText(), Double.valueOf(price.getText()), barcode.getText());
+                ProductManagement.getInstance().addProduct(prodName.getText(), Double.valueOf(price.getText()), barcode.getText());
             } catch (Exception e) {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, ((Button) event.getSource()).getScene().getWindow(), "ERROR", "Value not allowed OR product with same name already exists");
             }
             refreshProduct();
         });
         del.setOnMouseClicked(event -> {
-            SaleProduct product = ProductManagement.getInstance().getProduct(prodname.getText());
+            SaleProduct product = ProductManagement.getInstance().getProduct(prodName.getText());
             if (product == null)
                 AlertHelper.showAlert(Alert.AlertType.ERROR, ((Button) event.getSource()).getScene().getWindow(), "ERROR", "Invalid Product to delete");
             else {
                 ProductManagement.getInstance().deleteProduct(product);
-                CategoryManagement.getInstance().allCategory().forEach((s, category) -> {
-                    category.removeProductFromCategory(product);
-                });
+                CategoryManagement.getInstance().allCategory().forEach((s, category) -> category.removeProductFromCategory(product));
             }
             refreshProduct();
         });
         save.setOnMouseClicked(event -> {
-            SaleProduct product = ProductManagement.getInstance().getProduct(prodname.getText());
+            SaleProduct product = ProductManagement.getInstance().getProduct(prodName.getText());
             if (product == null) {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, ((Button) event.getSource()).getScene().getWindow(), "ERROR", "Product Does Not exist, proceeding to add new product");
                 try {
-                    ProductManagement.getInstance().addProduct(prodname.getText(), Double.valueOf(price.getText()), barcode.getText());
+                    ProductManagement.getInstance().addProduct(prodName.getText(), Double.valueOf(price.getText()), barcode.getText());
                 } catch (Exception e) {
                     AlertHelper.showAlert(Alert.AlertType.ERROR, ((Button) event.getSource()).getScene().getWindow(), "ERROR", "Value not allowed");
                 }
             } else {
                 try {
-                    ProductManagement.getInstance().saveProduct(product, prodname.getText(), Double.valueOf(price.getText()), barcode.getText());
+                    ProductManagement.getInstance().saveProduct(product, prodName.getText(), Double.valueOf(price.getText()), barcode.getText());
                 } catch (Exception e) {
                     AlertHelper.showAlert(Alert.AlertType.ERROR, ((Button) event.getSource()).getScene().getWindow(), "ERROR", "Value not allowed");
                 }
@@ -189,6 +187,10 @@ public class ProductController {
             refreshProduct();
         });
     }
+
+    /**
+     * Show and Hide the side bar with animations, when showing sidebar, set original page to go to 70% fade to have the effect of being in the background.
+     */
 
     private void showMenu(HBox menubar) {
         stackRoot.getChildren().add(menubar);

@@ -85,8 +85,8 @@ public class SalesController {
     private Button cashFlowBtn;
 
 
-    AtomicBoolean notDone = new AtomicBoolean(true);
-    AtomicReference<Double> totalprice = new AtomicReference<>((double) 0);
+    private AtomicBoolean notDone = new AtomicBoolean(true);
+    private AtomicReference<Double> totalPrice = new AtomicReference<>((double) 0);
     @FXML
     private Button enter;
     @FXML
@@ -121,7 +121,7 @@ public class SalesController {
             if (ke.getCode() == KeyCode.ENTER) {
                 notDone.set(true);
                 while (notDone.get()) {
-                    TextInputDialog dialog = new TextInputDialog(totalprice.get() + "");
+                    TextInputDialog dialog = new TextInputDialog(totalPrice.get() + "");
 
                     dialog.setTitle("Enter Amount Paid");
                     dialog.setHeaderText("Paid");
@@ -129,8 +129,8 @@ public class SalesController {
 
                     Optional<String> result = dialog.showAndWait();
                     if (result.isPresent()) {
-                        if (Double.valueOf(result.get()) >= totalprice.get()) {
-                            AlertHelper.showAlert(Alert.AlertType.INFORMATION, Main.prim.getOwner(), "Ditto POS", "CHANGE = " + (Double.valueOf(result.get()) - totalprice.get()));
+                        if (Double.valueOf(result.get()) >= totalPrice.get()) {
+                            AlertHelper.showAlert(Alert.AlertType.INFORMATION, Main.prim.getOwner(), "Ditto POS", "CHANGE = " + (Double.valueOf(result.get()) - totalPrice.get()));
                             notDone.set(false);
 
                         }
@@ -165,7 +165,7 @@ public class SalesController {
 
             notDone.set(true);
             while (notDone.get()) {
-                TextInputDialog dialog = new TextInputDialog(totalprice.get() + "");
+                TextInputDialog dialog = new TextInputDialog(totalPrice.get() + "");
 
                 dialog.setTitle("Enter Amount Paid");
                 dialog.setHeaderText("Paid");
@@ -173,8 +173,8 @@ public class SalesController {
 
                 Optional<String> result = dialog.showAndWait();
                 if (result.isPresent()) {
-                    if (Double.valueOf(result.get()) >= totalprice.get()) {
-                        AlertHelper.showAlert(Alert.AlertType.INFORMATION, Main.prim.getOwner(), "Ditto POS", "CHANGE = " + (Double.valueOf(result.get()) - totalprice.get()));
+                    if (Double.valueOf(result.get()) >= totalPrice.get()) {
+                        AlertHelper.showAlert(Alert.AlertType.INFORMATION, Main.prim.getOwner(), "Ditto POS", "CHANGE = " + (Double.valueOf(result.get()) - totalPrice.get()));
                         notDone.set(false);
 
                     } else {
@@ -249,15 +249,15 @@ public class SalesController {
 
     private void resetReceiptAndStart() {
         ReceiptManagement.getInstance().addReceiptAndClear(ReceiptManagement.getInstance().getCurrentReceipt());
-        CashFlow.getInstance().addToList("SALES", totalprice.get());
-        totalprice.set(0.0);
+        CashFlow.getInstance().addToList("SALES", totalPrice.get());
+        totalPrice.set(0.0);
         refreshReceipt();
     }
 
     private void refreshReceipt() {
         listReceipt.getChildren().clear();
         AtomicInteger i = new AtomicInteger(1);
-        totalprice.set((double) 0);
+        totalPrice.set((double) 0);
         try {
             ReceiptManagement.getInstance().getCurrentReceipt().getResit().forEach(
                     (saleProduct, integer) ->
@@ -273,12 +273,12 @@ public class SalesController {
 
 
                         listReceipt.getChildren().add(button);
-                        totalprice.updateAndGet(v -> v + (saleProduct.getProduct().getPrice() * integer));
+                        totalPrice.updateAndGet(v -> v + (saleProduct.getProduct().getPrice() * integer));
                     });
         } catch (Exception e) {
             resetReceiptAndStart();
         }
-        priceTot.setText(totalprice.get() + "$");
+        priceTot.setText(totalPrice.get() + "$");
     }
 
 
@@ -307,7 +307,7 @@ public class SalesController {
         if (categorySelected != null)
             categorySelected.setStyle("");
         categorySelected = (Button) event.getSource();
-        categorySelected.setStyle("-fx-background-color: grey");
+        categorySelected.setStyle("-fx-background-color: grey"); // set selected button to some other color, makes it more "visible" to user
         categoryShow = category;
         showProduct();
         //System.out.println(x.getWidth());

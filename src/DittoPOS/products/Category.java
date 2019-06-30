@@ -14,12 +14,12 @@ public class Category {
 
     public boolean removeProductFromCategory(SaleProduct Product)
     {
-        removeProductFromCatByName(Product.getProduct().getName());
+        removeProductFromCatByName(Product.getProduct().getName()); // remove every product matching name, as json serializing/deserializing causes some issues by using references
         return products.remove(Product);
     }
 
     public void removeProductFromCatByName(String name) {
-        products.removeIf(saleProduct -> saleProduct.getProduct().getName().equals(name));
+        products.removeIf(saleProduct -> saleProduct.getProduct().getName().equals(name)); // java 8 predicate to remove everything that matches the rule
     }
 
     public ArrayList<SaleProduct> getProductsInCategory()

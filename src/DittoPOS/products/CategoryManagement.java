@@ -9,7 +9,7 @@ public class CategoryManagement {
     private static CategoryManagement instance = null;
     HashMap<String, Category> categories = new HashMap<>();
 
-    public synchronized static CategoryManagement getInstance() {
+    public synchronized static CategoryManagement getInstance() { // synchronized singleton object - thread safe implementation , keyword here is in sync - only 1 thread can access it at a time
         if (instance == null) {
             instance = new CategoryManagement();
         }
