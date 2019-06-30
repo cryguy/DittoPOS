@@ -7,6 +7,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -113,21 +114,38 @@ public class UserController {
         timeline.play();
 
         newUser.setOnMouseClicked(event -> {
-            System.out.println(newFile.getAbsolutePath());
-            UserManagement.getInstance().addUser(this.usernameTxt.getText(), this.passwordTxt.getText(), newFile.getAbsolutePath());
+            //System.out.println(newFile.getAbsolutePath());
+            if (newFile != null)
+                UserManagement.getInstance().addUser(this.usernameTxt.getText(), this.passwordTxt.getText(), newFile.getAbsolutePath());
+            else
+                UserManagement.getInstance().addUser(this.usernameTxt.getText(), this.passwordTxt.getText(), "");
             populateUsers();
         });
 
 
         saveUser.setOnMouseClicked(event -> {
 
-            UserManagement.getInstance().users.get(usernameTxt.getText()).setPassword(this.passwordTxt.getText(), false);
-            UserManagement.getInstance().users.get(usernameTxt.getText()).setImage(this.newFile.getAbsolutePath());
+            if (UserManagement.getInstance().users.get(usernameTxt.getText()) == null) {
+                AlertHelper.showAlert(Alert.AlertType.ERROR, Main.prim, "DittoPOS - Administration", "User with name doesnt exists, creating new user instead");
+                if (newFile != null)
+                    UserManagement.getInstance().addUser(this.usernameTxt.getText(), this.passwordTxt.getText(), newFile.getAbsolutePath());
+                else
+                    UserManagement.getInstance().addUser(this.usernameTxt.getText(), this.passwordTxt.getText(), "");
+
+
+            } else {
+                UserManagement.getInstance().users.get(usernameTxt.getText()).setPassword(this.passwordTxt.getText(), false);
+                if (this.newFile != null)
+                    UserManagement.getInstance().users.get(usernameTxt.getText()).setImage(this.newFile.getAbsolutePath());
+            }
             populateUsers();
 
         });
         delUser.setOnMouseClicked(event -> {
-            UserManagement.getInstance().users.remove(usernameTxt.getText());
+            if (UserManagement.getInstance().users.size() == 1)
+                AlertHelper.showAlert(Alert.AlertType.ERROR, Main.prim, "DittoPOS - Administration", "Current Amount of users is 1, refusing to delete User");
+            else
+                UserManagement.getInstance().users.remove(usernameTxt.getText());
             populateUsers();
         });
         chooseImage.setOnMouseClicked(event -> {
@@ -222,9 +240,7 @@ public class UserController {
 
         showEditorRootTransition.play();
         hideFileRootTransition.play();
-        System.out.println("removing menu");
         stackRoot.getChildren().remove(menubar);
-        System.out.println("removed menu");
     }
 
 

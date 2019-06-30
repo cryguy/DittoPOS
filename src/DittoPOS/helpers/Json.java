@@ -49,8 +49,8 @@ public class Json {
     }
 
 
-    public static void printString() {
-        System.out.println(new Gson().toJson(new Json()));
+    public static String printString() {
+        return new Gson().toJson(new Json());
     }
 
     public static void prettyPrint() {

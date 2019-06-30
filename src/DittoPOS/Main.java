@@ -1,13 +1,20 @@
 package DittoPOS;
 
+import DittoPOS.Controllers.AlertHelper;
+import DittoPOS.administration.UserManagement;
 import DittoPOS.helpers.Json;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Base64;
 
 public class Main extends Application {
     public static Stage prim = null;
@@ -23,42 +30,53 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        //String json = "{\n" +
-        // "  \"productJson\": \"[{\\\"product\\\":{\\\"name\\\":\\\"Water\\\",\\\"barcode\\\":\\\"WATER-1\\\",\\\"price\\\":15.0,\\\"canExpire\\\":false},\\\"stock\\\":0,\\\"minStock\\\":0,\\\"maxStock\\\":0},{\\\"product\\\":{\\\"name\\\":\\\"Water Juice\\\",\\\"barcode\\\":\\\"WATER-2\\\",\\\"price\\\":16.0,\\\"canExpire\\\":false},\\\"stock\\\":0,\\\"minStock\\\":0,\\\"maxStock\\\":0}]\",\n" +
-        // "  \"receiptJson\": \"{\\\"Admin\\\":{\\\"name\\\":\\\"Admin\\\",\\\"image\\\":\\\"F:\\\\\\\\shy desktop\\\\\\\\Puppet_Auriel_Spray.png\\\",\\\"password_hash\\\":\\\"n7i6M/tjBBA8PfAubweAJbfYpkQ\\\\u003d,hcSHd2ukz73TRj87T54MEHYYlAOPWUSb4QWQOnmmPqM\\\\u003d\\\"}}\",\n" +
-        //  "  \"userJson\": \"{\\\"Admin\\\":{\\\"name\\\":\\\"Admin\\\",\\\"image\\\":\\\"F:\\\\\\\\shy desktop\\\\\\\\Puppet_Auriel_Spray.png\\\",\\\"password_hash\\\":\\\"n7i6M/tjBBA8PfAubweAJbfYpkQ\\\\u003d,hcSHd2ukz73TRj87T54MEHYYlAOPWUSb4QWQOnmmPqM\\\\u003d\\\"}}\",\n" +
-        //  "  \"categoryJson\": \"{\\\"ALPHA\\\":{\\\"products\\\":[{\\\"product\\\":{\\\"name\\\":\\\"Water Juice\\\",\\\"barcode\\\":\\\"WATER-2\\\",\\\"price\\\":16.0,\\\"canExpire\\\":false},\\\"stock\\\":0,\\\"minStock\\\":0,\\\"maxStock\\\":0},{\\\"product\\\":{\\\"name\\\":\\\"Water\\\",\\\"barcode\\\":\\\"WATER-1\\\",\\\"price\\\":15.0,\\\"canExpire\\\":false},\\\"stock\\\":0,\\\"minStock\\\":0,\\\"maxStock\\\":0}]}}\",\n" +
-        //   "  \"cashFlowJson\": \"[13.37]\",\n" +
-        //   "  \"cashFlowReJson\": \"[\\\"NEW SALE\\\"]\"\n" +
-        //   "}";
-        //"{\"productJson\":\"[{\\\"name\\\":\\\"AAA\\\",\\\"price\\\":40.0,\\\"quantity\\\":1,\\\"ingredients\\\":[{\\\"name\\\":\\\"Abb\\\",\\\"price\\\":5.0,\\\"needed\\\":2}]}]\",\"stockJson\":\"{\\\"stocks\\\":[{\\\"left\\\":94,\\\"name\\\":\\\"Abb\\\",\\\"price\\\":5.0,\\\"needed\\\":0}],\\\"daycounter\\\":{\\\"Abb\\\":1},\\\"stockuse\\\":{\\\"Abb\\\":[6.0]}}\",\"orderJson\":\"[{\\\"identifier\\\":1,\\\"orderList\\\":[{\\\"name\\\":\\\"AAA\\\",\\\"price\\\":40.0,\\\"quantity\\\":3,\\\"ingredients\\\":[{\\\"name\\\":\\\"Abb\\\",\\\"price\\\":5.0,\\\"needed\\\":2}]}]}]\"}";
-        String json = "{\"productJson\":\"[{\\\"product\\\":{\\\"name\\\":\\\"Water Boii\\\",\\\"barcode\\\":\\\"AAA1\\\",\\\"price\\\":12.0,\\\"canExpire\\\":false},\\\"stock\\\":0,\\\"minStock\\\":0,\\\"maxStock\\\":0}]\",\"receiptJson\":\"{\\\"Admin\\\":{\\\"name\\\":\\\"Admin\\\",\\\"image\\\":\\\"F:\\\\\\\\shy desktop\\\\\\\\Puppet_Auriel_Spray.png\\\",\\\"password_hash\\\":\\\"9k3Zh2jM6zWWj3wTpIkz0cMjgcc\\\\u003d,JsV10ASTqKHiNm2+se4h18OE/h91RXIgjZTZZ+fpVF0\\\\u003d\\\"}}\",\"userJson\":\"{\\\"Admin\\\":{\\\"name\\\":\\\"Admin\\\",\\\"image\\\":\\\"F:\\\\\\\\shy desktop\\\\\\\\Puppet_Auriel_Spray.png\\\",\\\"password_hash\\\":\\\"9k3Zh2jM6zWWj3wTpIkz0cMjgcc\\\\u003d,JsV10ASTqKHiNm2+se4h18OE/h91RXIgjZTZZ+fpVF0\\\\u003d\\\"}}\",\"categoryJson\":\"{\\\"AX\\\":{\\\"products\\\":[{\\\"product\\\":{\\\"name\\\":\\\"Water Boii\\\",\\\"barcode\\\":\\\"AAA1\\\",\\\"price\\\":12.0,\\\"canExpire\\\":false},\\\"stock\\\":0,\\\"minStock\\\":0,\\\"maxStock\\\":0}]}}\",\"cashFlowJson\":\"[13.37]\",\"cashFlowReJson\":\"[\\\"ALPHA BOII\\\"]\"}\n";
-        Json.fromString(json).restoreAll();
-        //Menu menu = new Menu();
-        //menu.mainMenu();
-        //UserManagement.getInstance().addUser("Admin","Admin","");
 
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                Json.printString();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            String base64 = Base64.getEncoder().encodeToString(Json.printString().getBytes());
+            try {
+                FileWriter fw = new FileWriter("important.data");
+                fw.write(base64);
+                fw.close();
+                System.out.println("[+] SAVED TO FILE, GOODBYE");
+            } catch (Exception e) {
+                System.out.println("[-] UNABLE TO WRITE TO FILE!!!");
             }
-        });
-
+        }));
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+
         prim = primaryStage;
+
+        try {
+            FileReader reader = new FileReader("important.data");
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            byte[] valueDecoded = Base64.getDecoder().decode(bufferedReader.readLine());
+            String json = new String(valueDecoded);
+            reader.close();
+            System.out.println("[+] LOADING DATA!!!");
+            Json.fromString(json).restoreAll();
+            System.out.println("[+] LOADED DATA!!!");
+        } catch (IOException e) {
+            AlertHelper.showAlert(Alert.AlertType.INFORMATION, prim.getOwner(), "Welcome to DittoPOS", "The default login is enabled, Login with Account Admin with password - \"Admin\".\nSomething bad happened if you do not expect to see this! ");
+            System.out.println("[+] DATA NOT FOUND, STARTING FROM SCRATCH!!!");
+            UserManagement.getInstance().addUser("Admin", "Admin", "");
+        }
+
+
+
         Parent root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
         primaryStage.setTitle("DittoPOS");
         primaryStage.setScene(new Scene(root, 1280, 800));
         primaryStage.setResizable(false);
         System.out.println("[+] Primary Stage initialized, Showing Login");
 
+
         primaryStage.setWidth(1280);
         primaryStage.show();
-        System.out.println(primaryStage.getWidth() + " " + primaryStage.getHeight());
     }
 }

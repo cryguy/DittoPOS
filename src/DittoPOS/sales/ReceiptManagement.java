@@ -19,6 +19,11 @@ public class ReceiptManagement {
         return instance;
     }
 
+    public void addReceiptAndClear(Receipt receipttoclone) {
+        receipt.add(new Receipt(receipttoclone.resit));
+        receipttoclone.resit.clear();
+    }
+
     public Receipt getCurrentReceipt() {
         return currentReceipt;
     }

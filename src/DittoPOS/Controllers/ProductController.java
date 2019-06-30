@@ -2,6 +2,7 @@ package DittoPOS.Controllers;
 
 import DittoPOS.Main;
 import DittoPOS.administration.UserManagement;
+import DittoPOS.products.CategoryManagement;
 import DittoPOS.products.ProductManagement;
 import DittoPOS.products.SaleProduct;
 import javafx.animation.Animation;
@@ -95,7 +96,6 @@ public class ProductController {
             button.setMinWidth(400);
 
             button.setOnMouseClicked(event -> {
-                System.out.println(saleProduct.getProduct().getBarcode());
                 this.barcode.setText(saleProduct.getProduct().getBarcode());
                 this.prodname.setText(saleProduct.getProduct().getName());
                 this.price.setText(Double.toString(saleProduct.getProduct().getPrice()));
@@ -148,9 +148,13 @@ public class ProductController {
         cashFlowBtn.setOnMouseClicked(event -> Main.changeScene("CashFlow.fxml"));
         add.setOnMouseClicked(event -> {
             try {
+                if (ProductManagement.getInstance().getProduct(prodname.getText()) != null) {
+                    throw new NullPointerException("");
+                }
+
                 ProductManagement.getInstance().addProduct(prodname.getText(), Double.valueOf(price.getText()), barcode.getText());
             } catch (Exception e) {
-                AlertHelper.showAlert(Alert.AlertType.ERROR, ((Button) event.getSource()).getScene().getWindow(), "ERROR", "Value not allowed");
+                AlertHelper.showAlert(Alert.AlertType.ERROR, ((Button) event.getSource()).getScene().getWindow(), "ERROR", "Value not allowed OR product with same name already exists");
             }
             refreshProduct();
         });
@@ -158,7 +162,12 @@ public class ProductController {
             SaleProduct product = ProductManagement.getInstance().getProduct(prodname.getText());
             if (product == null)
                 AlertHelper.showAlert(Alert.AlertType.ERROR, ((Button) event.getSource()).getScene().getWindow(), "ERROR", "Invalid Product to delete");
-            ProductManagement.getInstance().deleteProduct(product);
+            else {
+                ProductManagement.getInstance().deleteProduct(product);
+                CategoryManagement.getInstance().allCategory().forEach((s, category) -> {
+                    category.removeProductFromCategory(product);
+                });
+            }
             refreshProduct();
         });
         save.setOnMouseClicked(event -> {
@@ -205,8 +214,6 @@ public class ProductController {
 
         showEditorRootTransition.play();
         hideFileRootTransition.play();
-        System.out.println("removing menu");
         stackRoot.getChildren().remove(menubar);
-        System.out.println("removed menu");
     }
 }

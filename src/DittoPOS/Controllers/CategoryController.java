@@ -12,6 +12,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
@@ -39,6 +40,7 @@ public class CategoryController {
 
     private Button lastclicked;
     private Category categoryselected;
+    private String nameOfCatSel;
 
     @FXML
     private VBox catlist;
@@ -94,15 +96,18 @@ public class CategoryController {
     private Button cashFlowBtn;
 
 
-    private void onActionClick(ActionEvent event, Category category) {
+    private void onActionClick(ActionEvent event, Category category, String name) {
         if (lastclicked != null)
             lastclicked.setStyle("");
         lastclicked = (Button) event.getSource();
         lastclicked.setStyle("-fx-background-color: grey");
 
         categoryselected = category;
+        nameOfCatSel = name;
+        this.catname.setText(name);
         loadProducts();
     }
+
 
     private void loadProducts() {
         ArrayList<SaleProduct> toshow = new ArrayList<>(ProductManagement.getInstance().getProducts());
@@ -135,6 +140,17 @@ public class CategoryController {
 
     @FXML
     public void initialize() {
+        del.setOnMouseClicked(event -> {
+            CategoryManagement.getInstance().deleteCategory(nameOfCatSel);
+            populateCatList();
+        });
+        save.setOnMouseClicked(event -> {
+            Category temp = CategoryManagement.getInstance().getCategory(nameOfCatSel);
+            CategoryManagement.getInstance().deleteCategory(nameOfCatSel);
+            CategoryManagement.getInstance().addCategory(catname.getText());
+            CategoryManagement.getInstance().getCategory(catname.getText()).setProducts(temp.getProductsInCategory());
+            populateCatList();
+        });
         username.setText(UserManagement.getInstance().loggedin.getName());
         timeNow.setTextAlignment(TextAlignment.RIGHT);
         DateFormat timeFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
@@ -177,10 +193,16 @@ public class CategoryController {
 
         populateCatList();
         add.setOnMouseClicked(event -> {
-            CategoryManagement.getInstance().addCategory(catname.getText());
-            populateCatList();
-            catname.setText("");
-        });
+                    if (CategoryManagement.getInstance().getCategory(catname.getText()) != null)
+                        AlertHelper.showAlert(Alert.AlertType.ERROR, Main.prim.getOwner(), "DittoPOS - Category ERROR", "ERROR - A Category with the Chosen name is already Present");
+
+                    else {
+                        CategoryManagement.getInstance().addCategory(catname.getText());
+                        populateCatList();
+                        catname.setText("");
+                    }
+                }
+        );
     }
 
 
@@ -208,9 +230,7 @@ public class CategoryController {
 
         showEditorRootTransition.play();
         hideFileRootTransition.play();
-        System.out.println("removing menu");
         stackRoot.getChildren().remove(menubar);
-        System.out.println("removed menu");
     }
 
     private void populateCatList() {
@@ -219,7 +239,7 @@ public class CategoryController {
             Button button = new Button(string);
             button.setMinWidth(235);
             button.setMinHeight(88);
-            button.setOnAction(event -> onActionClick(event, category));  // set action of button to the onactionclick button.
+            button.setOnAction(event -> onActionClick(event, category, string));  // set action of button to the onactionclick button.
             catlist.getChildren().add(button);
         });
     }

@@ -15,12 +15,15 @@
       <children>
         <AnchorPane layoutY="44.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="708.0" prefWidth="1280.0">
           <children>
-            <AnchorPane layoutX="949.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity">
+              <AnchorPane layoutX="949.0" layoutY="37.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="678.0"
+                          prefWidth="315.0">
               <children>
                 <Separator layoutX="-4.0" layoutY="355.0" prefHeight="5.0" prefWidth="319.0" />
-                <ScrollPane id="ScrollPane" fitToWidth="true" layoutX="-4.0" layoutY="0.0" prefViewportHeight="206.0" prefViewportWidth="292.0" prefWidth="309.0">
+                  <ScrollPane id="ScrollPane" fitToWidth="true" layoutX="-4.0" layoutY="-4.0" prefHeight="274.0"
+                              prefViewportHeight="206.0" prefViewportWidth="292.0" prefWidth="319.0"
+                              vbarPolicy="ALWAYS">
                   <content>
-                    <VBox fx:id="listReceipt" prefHeight="206.0" prefWidth="308.0" />
+                      <VBox fx:id="listReceipt" prefHeight="206.0" prefWidth="304.0"/>
                   </content>
                 </ScrollPane>
                 <GridPane layoutX="-8.0" layoutY="373.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="300.0">
@@ -43,10 +46,15 @@
                     <Button font="$x1" mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="3" textFill="$x2" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                     <Button font="$x1" mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="6" textFill="$x2" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                     <Button font="$x1" mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="*" textFill="$x2" GridPane.columnIndex="2" />
-                    <Button font="$x1" mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="-" textFill="$x2" GridPane.columnIndex="3" />
+                      <Button fx:id="minus" font="$x1" mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0"
+                              text="-" textFill="$x2" GridPane.columnIndex="3"/>
                     <Button font="$x1" mnemonicParsing="false" prefHeight="60.0" prefWidth="160.0" text="0" textFill="$x2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-                    <Button font="$x1" mnemonicParsing="false" prefHeight="120.0" prefWidth="80.0" text="+" textFill="$x2" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-                    <Button font="$x1" mnemonicParsing="false" prefHeight="120.0" prefWidth="80.0" text="=" textFill="$x2" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="2" />
+                      <Button fx:id="add" font="$x1" mnemonicParsing="false" prefHeight="120.0" prefWidth="80.0"
+                              text="+" textFill="$x2" GridPane.columnIndex="3" GridPane.rowIndex="1"
+                              GridPane.rowSpan="2"/>
+                      <Button fx:id="enter" font="$x1" mnemonicParsing="false" prefHeight="120.0" prefWidth="80.0"
+                              text="=" textFill="$x2" GridPane.columnIndex="3" GridPane.rowIndex="3"
+                              GridPane.rowSpan="2"/>
                     <Button font="$x1" mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="." GridPane.columnIndex="2" GridPane.rowIndex="4" />
                   </children>
                   <columnConstraints>
@@ -63,64 +71,19 @@
                     <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                 </GridPane>
-                <TextField layoutX="-4.0" layoutY="279.0" prefHeight="68.0" prefWidth="319.0" />
-                <HBox layoutX="-4.0" layoutY="212.0" spacing="5.0">
-                  <children>
-                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="45.0" textFill="$x2">
-                      <font>
-                        <Font size="1.0" fx:id="x3" />
-                      </font>
-                    </Button>
-                    <Button font="$x3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="45.0" textFill="$x2" />
-                    <Button font="$x3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="45.0" textFill="$x2" />
-                    <Button font="$x3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="45.0" textFill="$x2" />
-                  </children>
-                </HBox>
-                <HBox layoutX="210.0" layoutY="212.0" spacing="5.0">
-                  <children>
-                    <Button font="$x3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="45.0" textFill="$x2" />
-                    <Button font="$x3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="45.0" textFill="$x2" />
-                  </children>
-                </HBox>
+                  <TextField fx:id="priceTot" layoutX="-4.0" layoutY="279.0" prefHeight="68.0" prefWidth="319.0"/>
               </children>
             </AnchorPane>
-            <HBox layoutX="236.0" layoutY="14.0" spacing="5.0">
-              <children>
-                <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Secrets" textFill="$x2">
-                  <font>
-                    <Font size="10.0" fx:id="x4" />
-                  </font>
-                </Button>
-                <Button font="$x4" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Secrets" textFill="$x2" />
-                <Button font="$x4" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Secrets" textFill="$x2" />
-                <Button font="$x4" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Secrets" textFill="$x2" />
-                <Button font="$x4" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Secrets" textFill="$x2" />
-              </children>
-            </HBox>
-            <HBox layoutX="41.0" layoutY="14.0" spacing="5.0">
-              <children>
-                <Button font="$x4" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Secrets" textFill="$x2" />
-                <Button font="$x4" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Secrets" textFill="$x2" />
-              </children>
-            </HBox>
-            <ScrollPane layoutX="41.0" layoutY="103.0" prefHeight="584.0" prefWidth="165.0">
+              <ScrollPane layoutX="41.0" layoutY="33.0" prefHeight="678.0" prefWidth="165.0">
               <content>
                   <VBox fx:id="categoryBox" prefHeight="200.0" prefWidth="100.0"/>
               </content>
             </ScrollPane>
-              <ScrollPane layoutX="236.0" layoutY="103.0" prefHeight="584.0" prefWidth="677.0" vbarPolicy="ALWAYS">
+              <ScrollPane layoutX="236.0" layoutY="33.0" prefHeight="678.0" prefWidth="677.0" vbarPolicy="ALWAYS">
                   <content>
-                      <FlowPane fx:id="products" hgap="15.0" prefHeight="582.0" prefWidth="662.0" vgap="15.0"/>
+                      <FlowPane fx:id="products" hgap="15.0" prefHeight="583.0" prefWidth="662.0" vgap="15.0"/>
                   </content>
             </ScrollPane>
-            <HBox layoutX="666.0" layoutY="14.0" spacing="5.0">
-              <children>
-                <Button font="$x3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="45.0" textFill="$x2" />
-                <Button font="$x3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="45.0" textFill="$x2" />
-                <Button font="$x4" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Secrets" textFill="$x2" />
-                <Button font="$x4" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Secrets" textFill="$x2" />
-              </children>
-            </HBox>
               <Button fx:id="sideBar" ellipsisString="&gt;" layoutY="33.0" mnemonicParsing="false" prefHeight="89.0"
                       prefWidth="26.0" text="&gt;"/>
           </children>

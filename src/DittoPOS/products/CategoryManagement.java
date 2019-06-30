@@ -21,9 +21,10 @@ public class CategoryManagement {
     }
     public Category getCategory(String name)
     {
-        return categories.get(name);
+        return categories.getOrDefault(name, null);
     }
-    boolean deleteCategory(String name)
+
+    public boolean deleteCategory(String name)
     {
         return categories.remove(name,categories.get(name));
     }

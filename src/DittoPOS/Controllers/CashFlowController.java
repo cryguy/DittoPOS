@@ -163,9 +163,7 @@ public class CashFlowController {
 
         showEditorRootTransition.play();
         hideFileRootTransition.play();
-        System.out.println("removing menu");
         stackRoot.getChildren().remove(menubar);
-        System.out.println("removed menu");
     }
 
     void updateAll() {

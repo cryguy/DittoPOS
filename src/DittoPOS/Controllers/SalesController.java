@@ -6,6 +6,7 @@ import DittoPOS.products.Category;
 import DittoPOS.products.CategoryManagement;
 import DittoPOS.products.ProductManagement;
 import DittoPOS.products.SaleProduct;
+import DittoPOS.reports.CashFlow;
 import DittoPOS.sales.ReceiptManagement;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -13,7 +14,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -22,7 +26,10 @@ import javafx.util.Duration;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SalesController {
     private static Button categorySelected = null;
@@ -77,9 +84,23 @@ public class SalesController {
     @FXML
     private Button cashFlowBtn;
 
+
+    AtomicBoolean notDone = new AtomicBoolean(true);
+    AtomicReference<Double> totalprice = new AtomicReference<>((double) 0);
+    @FXML
+    private Button enter;
+    @FXML
+    private Button add;
+    @FXML
+    private Button minus;
+    @FXML
+    private TextField priceTot;
+    private SaleProduct currentPressed;
+
     @FXML
     public void initialize() {
 
+        refreshReceipt();
         username.setText(UserManagement.getInstance().loggedin.getName());
         hideMenu(sidebarMenu);
         timeNow.setTextAlignment(TextAlignment.RIGHT);
@@ -94,6 +115,91 @@ public class SalesController {
         timeline.play();
 
         showProduct();
+
+/*
+        Main.prim.getScene().addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
+            if (ke.getCode() == KeyCode.ENTER) {
+                notDone.set(true);
+                while (notDone.get()) {
+                    TextInputDialog dialog = new TextInputDialog(totalprice.get() + "");
+
+                    dialog.setTitle("Enter Amount Paid");
+                    dialog.setHeaderText("Paid");
+                    dialog.setContentText("Amount:");
+
+                    Optional<String> result = dialog.showAndWait();
+                    if (result.isPresent()) {
+                        if (Double.valueOf(result.get()) >= totalprice.get()) {
+                            AlertHelper.showAlert(Alert.AlertType.INFORMATION, Main.prim.getOwner(), "Ditto POS", "CHANGE = " + (Double.valueOf(result.get()) - totalprice.get()));
+                            notDone.set(false);
+
+                        }
+                        else {
+                            AlertHelper.showAlert(Alert.AlertType.ERROR, Main.prim.getOwner(), "Ditto POS", "Amount Paid is lower than total price");
+
+                        }
+                    }
+                    else {
+                        notDone.set(false);
+                    }
+                }
+                resetReceiptAndStart();
+                ke.consume(); // <-- stops passing the event to next node
+            }
+            if (ke.getCode() == KeyCode.ADD) {
+                // fire event here
+                ke.consume(); // <-- stops passing the event to next node
+                ReceiptManagement.getInstance().getCurrentReceipt().addItem(currentPressed, 1);
+                refreshReceipt();
+            }
+            if (ke.getCode() == KeyCode.SUBTRACT) {
+                // fire event here
+                ke.consume(); // <-- stops passing the event to next node
+                ReceiptManagement.getInstance().getCurrentReceipt().addItem(currentPressed, -1);
+                refreshReceipt();
+            }
+        });
+*/
+
+        enter.setOnMouseClicked(event -> {
+
+            notDone.set(true);
+            while (notDone.get()) {
+                TextInputDialog dialog = new TextInputDialog(totalprice.get() + "");
+
+                dialog.setTitle("Enter Amount Paid");
+                dialog.setHeaderText("Paid");
+                dialog.setContentText("Amount:");
+
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent()) {
+                    if (Double.valueOf(result.get()) >= totalprice.get()) {
+                        AlertHelper.showAlert(Alert.AlertType.INFORMATION, Main.prim.getOwner(), "Ditto POS", "CHANGE = " + (Double.valueOf(result.get()) - totalprice.get()));
+                        notDone.set(false);
+
+                    } else {
+                        AlertHelper.showAlert(Alert.AlertType.ERROR, Main.prim.getOwner(), "Ditto POS", "Amount Paid is lower than total price");
+
+                    }
+                } else {
+                    notDone.set(false);
+                }
+            }
+            resetReceiptAndStart();
+            // tabulate and show alert
+        });
+        add.setOnMouseClicked(event -> {
+            if (currentPressed != null)
+                ReceiptManagement.getInstance().getCurrentReceipt().addItem(currentPressed, 1);
+            refreshReceipt();
+        });
+        minus.setOnMouseClicked(event -> {
+
+            if (currentPressed != null)
+                ReceiptManagement.getInstance().getCurrentReceipt().addItem(currentPressed, -1);
+            refreshReceipt();
+        });
+
         sidebarMenu.setOnMouseClicked(event -> hideMenu(sidebarMenu));
 
         backBtn.setOnAction(event ->
@@ -140,18 +246,39 @@ public class SalesController {
 
     }
 
+
+    private void resetReceiptAndStart() {
+        ReceiptManagement.getInstance().addReceiptAndClear(ReceiptManagement.getInstance().getCurrentReceipt());
+        CashFlow.getInstance().addToList("SALES", totalprice.get());
+        totalprice.set(0.0);
+        refreshReceipt();
+    }
+
     private void refreshReceipt() {
         listReceipt.getChildren().clear();
         AtomicInteger i = new AtomicInteger(1);
-        ReceiptManagement.getInstance().getCurrentReceipt().getResit().forEach(
-                (saleProduct, integer) ->
-                {
-                    Button button = new Button(i.getAndIncrement() + " " + saleProduct.getProduct().getName() + " " + (saleProduct.getProduct().getPrice() * integer));
-                    button.setMinHeight(80);
-                    button.setMinWidth(304);
-                    listReceipt.getChildren().add(button);
+        totalprice.set((double) 0);
+        try {
+            ReceiptManagement.getInstance().getCurrentReceipt().getResit().forEach(
+                    (saleProduct, integer) ->
+                    {
 
-                });
+                        Button button = new Button(i.getAndIncrement() + "          " + integer + " x " + saleProduct.getProduct().getName() + "            " + (saleProduct.getProduct().getPrice() * integer));
+                        button.setMinHeight(80);
+                        button.setMinWidth(304);
+
+                        button.setOnMouseClicked(event -> {
+                            currentPressed = saleProduct;
+                        });
+
+
+                        listReceipt.getChildren().add(button);
+                        totalprice.updateAndGet(v -> v + (saleProduct.getProduct().getPrice() * integer));
+                    });
+        } catch (Exception e) {
+            resetReceiptAndStart();
+        }
+        priceTot.setText(totalprice.get() + "$");
     }
 
 
@@ -162,15 +289,14 @@ public class SalesController {
             catProducts = categoryShow.getProductsInCategory(); // show all product if no category is selected
         if (categoryShow == null)
             catProducts = ProductManagement.getInstance().getProducts();
-        System.out.println("Begin");
         catProducts.forEach(saleProduct -> {
-            System.out.println(saleProduct.getProduct().getName());
             Button button = new Button(saleProduct.getProduct().getName() + "\n\n" + saleProduct.getProduct().getPrice());
             button.setMinWidth(100);
             button.setMinHeight(100);
             button.setOnMouseClicked(event -> {
                 ReceiptManagement.getInstance().getCurrentReceipt().addItem(saleProduct, 1);
                 refreshReceipt();
+                currentPressed = saleProduct;
             });
             products.getChildren().add(button);
         });
@@ -211,9 +337,7 @@ public class SalesController {
 
         showEditorRootTransition.play();
         hideFileRootTransition.play();
-        System.out.println("removing menu");
         stackRoot.getChildren().remove(menubar);
-        System.out.println("removed menu");
     }
 
 }
