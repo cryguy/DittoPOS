@@ -1,6 +1,10 @@
 package DittoPOS.helpers;
 
+import DittoPOS.administration.UserManagement;
+import DittoPOS.products.CategoryManagement;
 import DittoPOS.products.ProductManagement;
+import DittoPOS.reports.CashFlow;
+import DittoPOS.sales.ReceiptManagement;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -12,7 +16,12 @@ public class Json {
      */
     public final static Gson a = new Gson();
     private final String productJson;
-   // private final String orderJson;
+    private final String receiptJson;
+    private final String userJson;
+    private final String categoryJson;
+    private final String cashFlowJson;
+
+    private final String cashFlowReJson;
 
 
     /**
@@ -20,7 +29,11 @@ public class Json {
      */
     private Json() {
         this.productJson = ProductManagement.getInstance().toJson();
-       // this.orderJson = OrderManagement.getInstance().toJson();
+        this.userJson = UserManagement.getInstance().toJson();
+        this.receiptJson = UserManagement.getInstance().toJson();
+        this.categoryJson = CategoryManagement.getInstance().toJson();
+        this.cashFlowJson = CashFlow.getInstance().toJsonCash();
+        this.cashFlowReJson = CashFlow.getInstance().toJsonRe();
     }
 
     /**
@@ -36,11 +49,11 @@ public class Json {
     }
 
 
-    static void printString() {
+    public static void printString() {
         System.out.println(new Gson().toJson(new Json()));
     }
 
-    static void prettyPrint() {
+    public static void prettyPrint() {
         System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(new Json()));
     }
 
@@ -50,6 +63,12 @@ public class Json {
      */
     public void restoreAll() {
         ProductManagement.getInstance().setProducts(this.productJson);
+        UserManagement.getInstance().setUsers(this.userJson);
+        ReceiptManagement.getInstance().setReceipt(this.receiptJson);
+        CategoryManagement.getInstance().setCategories(this.categoryJson);
+        CashFlow.getInstance().setLog(this.cashFlowReJson);
+        CashFlow.getInstance().setMoneylog(this.cashFlowJson);
+        //this.categoryJson = CategoryManagement.getInstance().toJson();
      //   OrderManagement.getInstance().setOrders(this.orderJson);
     }
 

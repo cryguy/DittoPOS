@@ -1,7 +1,9 @@
 package DittoPOS.products;
 
+import DittoPOS.helpers.Json;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.HashMap;
-import java.util.ArrayList;
 
 public class CategoryManagement {
     private static CategoryManagement instance = null;
@@ -25,8 +27,28 @@ public class CategoryManagement {
     {
         return categories.remove(name,categories.get(name));
     }
-    public HashMap allCategory()
+
+    public HashMap<String, Category> allCategory()
     {
         return this.categories;
+    }
+
+    /**
+     * serialize the current object into json
+     *
+     * @return String of json
+     */
+    public String toJson() {
+        return Json.a.toJson(categories);
+    }
+
+    /**
+     * restore the object using json data
+     *
+     * @param json the input of json string
+     */
+    public void setCategories(String json) {
+        categories = Json.a.fromJson(json, new TypeToken<HashMap<String, Category>>() {
+        }.getType());
     }
 }

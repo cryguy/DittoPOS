@@ -6,7 +6,6 @@ import DittoPOS.products.Category;
 import DittoPOS.products.CategoryManagement;
 import DittoPOS.products.ProductManagement;
 import DittoPOS.products.SaleProduct;
-import DittoPOS.sales.ReceiptManagement;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -14,6 +13,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -22,24 +22,39 @@ import javafx.util.Duration;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class SalesController {
-    private static Button categorySelected = null;
-    private static Category categoryShow = null;
+public class CategoryController {
     @FXML
-    private VBox categoryBox;
-
+    private TextField catname;
 
     @FXML
-    private VBox listReceipt;
+    private Button add;
+
+    @FXML
+    private Button del;
+
+    @FXML
+    private Button save;
+
+
+    private Button lastclicked;
+    private Category categoryselected;
+
+    @FXML
+    private VBox catlist;
+
+    @FXML
+    private FlowPane incat;
+
+    @FXML
+    private FlowPane notincat;
 
 
     @FXML
-    private AnchorPane root;
+    private Text username;
+
     @FXML
     private Text timeNow;
-
 
     @FXML
     private Button sideBar;
@@ -54,6 +69,8 @@ public class SalesController {
     private Button backBtn;
 
     @FXML
+    private Button salesBtn;
+    @FXML
     private Button prodBtn;
 
     @FXML
@@ -62,6 +79,7 @@ public class SalesController {
     @FXML
     private Button setBtn;
 
+
     @FXML
     private Button usrBtn;
 
@@ -69,31 +87,68 @@ public class SalesController {
     private Button outBtn;
 
     @FXML
-    private Text username;
+    private AnchorPane root;
 
-    @FXML
-    private FlowPane products;
 
     @FXML
     private Button cashFlowBtn;
 
+
+    private void onActionClick(ActionEvent event, Category category) {
+        if (lastclicked != null)
+            lastclicked.setStyle("");
+        lastclicked = (Button) event.getSource();
+        lastclicked.setStyle("-fx-background-color: grey");
+
+        categoryselected = category;
+        loadProducts();
+    }
+
+    private void loadProducts() {
+        ArrayList<SaleProduct> toshow = new ArrayList<>(ProductManagement.getInstance().getProducts());
+        toshow.removeAll(categoryselected.getProductsInCategory());
+        notincat.getChildren().clear();
+        incat.getChildren().clear();
+        for (SaleProduct i : categoryselected.getProductsInCategory()) {
+            Button button = new Button(i.getProduct().getName());
+            button.setMinHeight(100);
+            button.setMinWidth(100);
+            button.setOnMouseClicked(event -> {
+                categoryselected.removeProductFromCategory(i);
+                loadProducts();
+            });
+            incat.getChildren().add(button);
+        }
+
+        for (SaleProduct i : toshow) {
+            Button button = new Button(i.getProduct().getName());
+            button.setMinHeight(100);
+            button.setMinWidth(100);
+            button.setOnMouseClicked(event -> {
+                categoryselected.addProductToCategory(i);
+                loadProducts();
+            });
+            notincat.getChildren().add(button);
+        }
+    }
+
+
     @FXML
     public void initialize() {
-
         username.setText(UserManagement.getInstance().loggedin.getName());
-        hideMenu(sidebarMenu);
         timeNow.setTextAlignment(TextAlignment.RIGHT);
         DateFormat timeFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.millis(500),
-                        event -> timeNow.setText(timeFormat.format(System.currentTimeMillis()))
+                        event -> {
+                            timeNow.setText(timeFormat.format(System.currentTimeMillis()));
+                        }
                 )
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        showProduct();
         sidebarMenu.setOnMouseClicked(event -> hideMenu(sidebarMenu));
 
         backBtn.setOnAction(event ->
@@ -103,25 +158,7 @@ public class SalesController {
         sideBar.setOnAction(event ->
                 showMenu(sidebarMenu)
         );
-
-        Button x = new Button("ALL");
-        x.setMinHeight(67.00);
-        x.setMinWidth(163.00);
-        x.setOnAction(event -> catClick(event, null));  // set action of button to the onactionclick button.
-        categoryBox.getChildren().add(x);
-
-        CategoryManagement.getInstance().allCategory().forEach((name, category) -> {
-            Button button = new Button(name);
-            button.setMinHeight(67.00);
-            button.setMinWidth(163.00);
-            button.setOnAction(event -> catClick(event, category));  // set action of button to the onactionclick button.
-            categoryBox.getChildren().add(button);
-        });
-        refreshReceipt();
-
-
-//        Stage stage = (Stage) stackRoot.getScene().getWindow();
-
+        salesBtn.setOnMouseClicked(event -> Main.changeScene("SalesScreen.fxml"));
         prodBtn.setOnMouseClicked(event ->
                 Main.changeScene("ProductManagement.fxml")
         );
@@ -136,56 +173,16 @@ public class SalesController {
         );
 
         cashFlowBtn.setOnMouseClicked(event -> Main.changeScene("CashFlow.fxml"));
+        hideMenu(sidebarMenu);
 
-
-    }
-
-    private void refreshReceipt() {
-        listReceipt.getChildren().clear();
-        AtomicInteger i = new AtomicInteger(1);
-        ReceiptManagement.getInstance().getCurrentReceipt().getResit().forEach(
-                (saleProduct, integer) ->
-                {
-                    Button button = new Button(i.getAndIncrement() + " " + saleProduct.getProduct().getName() + " " + (saleProduct.getProduct().getPrice() * integer));
-                    button.setMinHeight(80);
-                    button.setMinWidth(304);
-                    listReceipt.getChildren().add(button);
-
-                });
-    }
-
-
-    private void showProduct() {
-        products.getChildren().clear();
-        ArrayList<SaleProduct> catProducts = new ArrayList<>();
-        if (categoryShow != null)
-            catProducts = categoryShow.getProductsInCategory(); // show all product if no category is selected
-        if (categoryShow == null)
-            catProducts = ProductManagement.getInstance().getProducts();
-        System.out.println("Begin");
-        catProducts.forEach(saleProduct -> {
-            System.out.println(saleProduct.getProduct().getName());
-            Button button = new Button(saleProduct.getProduct().getName() + "\n\n" + saleProduct.getProduct().getPrice());
-            button.setMinWidth(100);
-            button.setMinHeight(100);
-            button.setOnMouseClicked(event -> {
-                ReceiptManagement.getInstance().getCurrentReceipt().addItem(saleProduct, 1);
-                refreshReceipt();
-            });
-            products.getChildren().add(button);
+        populateCatList();
+        add.setOnMouseClicked(event -> {
+            CategoryManagement.getInstance().addCategory(catname.getText());
+            populateCatList();
+            catname.setText("");
         });
     }
 
-
-    private void catClick(ActionEvent event, Category category) {
-        if (categorySelected != null)
-            categorySelected.setStyle("");
-        categorySelected = (Button) event.getSource();
-        categorySelected.setStyle("-fx-background-color: grey");
-        categoryShow = category;
-        showProduct();
-        //System.out.println(x.getWidth());
-    }
 
     private void showMenu(HBox menubar) {
         stackRoot.getChildren().add(menubar);
@@ -216,4 +213,14 @@ public class SalesController {
         System.out.println("removed menu");
     }
 
+    private void populateCatList() {
+        catlist.getChildren().clear();
+        CategoryManagement.getInstance().allCategory().forEach((string, category) -> {
+            Button button = new Button(string);
+            button.setMinWidth(235);
+            button.setMinHeight(88);
+            button.setOnAction(event -> onActionClick(event, category));  // set action of button to the onactionclick button.
+            catlist.getChildren().add(button);
+        });
+    }
 }

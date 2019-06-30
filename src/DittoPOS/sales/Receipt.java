@@ -1,9 +1,8 @@
 package DittoPOS.sales;
 
+import DittoPOS.products.ProductManagement;
 import DittoPOS.products.SaleProduct;
-import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Receipt {
@@ -13,16 +12,14 @@ public class Receipt {
         return resit;
     }
 
-    void addItem(SaleProduct saleProduct, int quantity) {
-        resit.put(saleProduct, quantity);
+    public void addItem(SaleProduct saleProduct, int quantity) {
+
+
+        resit.put(ProductManagement.getInstance().getProduct(saleProduct.getProduct().getName()), resit.getOrDefault(ProductManagement.getInstance().getProduct(saleProduct.getProduct().getName()), 0) + quantity); // add quantity to product
     }
 
     private void removeItem(SaleProduct saleProduct) {
         resit.remove(saleProduct);
-    }
-
-    public Integer getQuantity(SaleProduct saleProduct) {
-        return resit.getOrDefault(saleProduct, 0);
     }
 
 

@@ -13,6 +13,7 @@ public class SaleProduct {
     public SaleProduct(String name, double price, boolean canExpire, String barcode, int stockleft, Tax tax)
     {
         product = new Product(name,price,canExpire);
+        this.product.setBarcode(barcode);
         this.tax = tax;
     }
 

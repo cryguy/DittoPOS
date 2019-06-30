@@ -1,5 +1,7 @@
 package DittoPOS.sales;
 
+import DittoPOS.helpers.Json;
+
 import java.util.ArrayList;
 
 public class ReceiptManagement {
@@ -33,5 +35,22 @@ public class ReceiptManagement {
         return receipt;
     }
 
+    /**
+     * serialize the current object into json
+     *
+     * @return String of json
+     */
+    public String toJson() {
+        return Json.a.toJson(receipt);
+    }
 
+
+    /**
+     * restore the object using json data
+     *
+     * @param json the input of json string
+     */
+    public void setReceipt(String json) {
+        // receipt = Json.a.fromJson(json, new TypeToken<ArrayList<Receipt>>() {}.getType());
+    }
 }

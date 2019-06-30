@@ -1,12 +1,17 @@
 package DittoPOS.Controllers;
 
+import DittoPOS.Main;
 import DittoPOS.administration.User;
 import DittoPOS.administration.UserManagement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
+
+import java.io.File;
 
 
 public class LoginController {
@@ -19,37 +24,44 @@ public class LoginController {
 @FXML
     private PasswordField passwordField;
 
+    @FXML
+    private ImageView userImg;
+
 @FXML
     protected void callLogin(){
-        User user;
-        Window owner = userList.getScene().getWindow();
-        if (!(UserManagement.getInstance().users.containsKey(usernameField.getText())))
-        {
-            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, owner, "Button Pressed!",
-                    ("Error Occurred!")); // user not found
+
+    User user;
+    Window owner = userList.getScene().getWindow();
+    if (!(UserManagement.getInstance().users.containsKey(usernameField.getText()))) {
+        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, owner, "Login!",
+                ("Error Occurred!")); // user not found
+    } else {
+        user = UserManagement.getInstance().users.get(usernameField.getText());
+        if (user.checkPassword(passwordField.getText())) {
+            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, owner, "Login Successful!",
+                    ("Hello " + user.getName())); // correct password given, pass the user to the current session.
+            UserManagement.getInstance().loggedin = user;
+            Main.changeScene("SalesScreen.fxml");
+        } else {
+            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, owner, "Login",
+                    ("Login Failed!")); // wrong password
         }
-        else {
-            user = UserManagement.getInstance().users.get(usernameField.getText());
-            if (user.checkPassword(passwordField.getText())) {
-                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, owner, "Button Pressed!",
-                        ("Hello " + user.getName())); // correct password given, pass the user to the current session.
-            }
-            else{
-                AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, owner, "Login",
-                        ("Login Failed!")); // wrong password
-            }
-        }
+    }
 }
 
 @FXML
     protected void onActionClick(ActionEvent event, User user){
     usernameField.setText(user.getName());
     Button x = (Button)event.getSource();
-    System.out.println(x.getWidth());
+    try {
+        userImg.setImage(new Image((new File(user.getImage())).toURI().toString()));
+    } catch (Exception e) {
+        System.out.println("Error Loading Image, Image not found?");
+    }
 }
     @FXML
     public void initialize() {
-
+        UserManagement.getInstance().loggedin = null;
         SplitPane.Divider divider = splitPane.getDividers().get(0);
         double splitpanepos = divider.getPosition();
         divider.positionProperty().addListener((observable, oldvalue, newvalue) -> divider.setPosition(splitpanepos));
