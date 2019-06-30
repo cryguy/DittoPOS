@@ -86,9 +86,7 @@ public class CashFlowController {
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.millis(500),
-                        event -> {
-                            timeNow.setText(timeFormat.format(System.currentTimeMillis()));
-                        }
+                        event -> timeNow.setText(timeFormat.format(System.currentTimeMillis()))
                 )
         );
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -166,7 +164,7 @@ public class CashFlowController {
         stackRoot.getChildren().remove(menubar);
     }
 
-    void updateAll() {
+    private void updateAll() {
         this.summary.setText("");
         AtomicReference<Double> total = new AtomicReference<>((double) 0);
         CashFlow.getInstance().getMoneylog().forEach(aDouble -> total.updateAndGet(v -> (double) (v + aDouble)));

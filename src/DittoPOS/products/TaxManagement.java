@@ -3,7 +3,7 @@ package DittoPOS.products;
 import java.util.ArrayList;
 
 public class TaxManagement {
-    static ArrayList<Tax> tax = new ArrayList<>();
+    private static ArrayList<Tax> tax = new ArrayList<>();
     private static TaxManagement instance = null;
 
     private TaxManagement(){

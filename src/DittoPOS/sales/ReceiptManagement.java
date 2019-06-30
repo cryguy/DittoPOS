@@ -5,7 +5,7 @@ import DittoPOS.helpers.Json;
 import java.util.ArrayList;
 
 public class ReceiptManagement {
-    static ArrayList<Receipt> receipt = new ArrayList<>();
+    private static ArrayList<Receipt> receipt = new ArrayList<>();
     private static ReceiptManagement instance = null;
     private Receipt currentReceipt = new Receipt();
 

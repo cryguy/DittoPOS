@@ -53,7 +53,7 @@ public class Product implements Cloneable {
         this.name = name;
     }
 
-    public void setPrice(double price) {
+    void setPrice(double price) {
         this.price = price;
     }
 
@@ -104,7 +104,7 @@ public class Product implements Cloneable {
         return barcode;
     }
 
-    public void setBarcode(String barcode) {
+    void setBarcode(String barcode) {
         this.barcode = barcode;
     }
 

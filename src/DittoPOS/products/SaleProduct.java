@@ -10,7 +10,8 @@ public class SaleProduct {
     private Tax tax;
     private int minStock;
     private int maxStock; // should we have this?
-    public SaleProduct(String name, double price, boolean canExpire, String barcode, int stockleft, Tax tax)
+
+    SaleProduct(String name, double price, boolean canExpire, String barcode, int stockleft, Tax tax)
     {
         product = new Product(name,price,canExpire);
         this.product.setBarcode(barcode);

@@ -3,7 +3,6 @@ package DittoPOS.Controllers;
 import DittoPOS.Main;
 import DittoPOS.administration.User;
 import DittoPOS.administration.UserManagement;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -49,16 +48,15 @@ public class LoginController {
     }
 }
 
-@FXML
-    protected void onActionClick(ActionEvent event, User user){
-    usernameField.setText(user.getName());
-    Button x = (Button)event.getSource();
-    try {
-        userImg.setImage(new Image((new File(user.getImage())).toURI().toString()));
-    } catch (Exception e) {
-        System.out.println("Error Loading Image, Image not found?");
+    @FXML
+    private void onActionClick(User user) {
+        usernameField.setText(user.getName());
+        try {
+            userImg.setImage(new Image((new File(user.getImage())).toURI().toString()));
+        } catch (Exception e) {
+            System.out.println("Error Loading Image, Image not found?");
+        }
     }
-}
     @FXML
     public void initialize() {
         UserManagement.getInstance().loggedin = null;
@@ -71,7 +69,7 @@ public class LoginController {
             Button button = new Button(i.toString());
             button.setMinHeight(67.00);
             button.setMinWidth(329.00);
-            button.setOnAction(event -> onActionClick(event,i));  // set action of button to the onactionclick button.
+            button.setOnAction(event -> onActionClick(i));  // set action of button to the onactionclick button.
             userList.getChildren().add(button);
         }
 

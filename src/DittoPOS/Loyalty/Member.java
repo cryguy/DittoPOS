@@ -1,15 +1,13 @@
 package DittoPOS.Loyalty;
-import java.lang.*;
-
 
 public class Member {
-    String name;
-    String address;
-    String email;
-    String phoneno;
-    int points;
+    private String name;
+    private String address;
+    private String email;
+    private String phoneno;
+    private int points;
 
-    public Member(String name, String address, String email, String phoneno) {
+    Member(String name, String address, String email, String phoneno) {
         this.name = name;
         this.address = address;
         this.email = email;
@@ -61,8 +59,7 @@ public class Member {
         this.points += points;
     }
 
-    public boolean checkMember(String keyword) {
-        CharSequence searchKeyword = keyword;
+    boolean checkMember(String keyword) {
         boolean bool = name.contains(keyword);
         bool = (bool | email.contains(keyword));
         bool = (bool | phoneno.contains(keyword));

@@ -16,7 +16,7 @@ public class ProductManagement {
      */
     // TODO : ADD method to add stock
     // StockManagement is an object that contains the array of Stocks
-    ArrayList<SaleProduct> products = new ArrayList<>();
+    private ArrayList<SaleProduct> products = new ArrayList<>();
     private static ProductManagement instance = null;
 
     private ProductManagement() {
