@@ -157,9 +157,7 @@ public class CategoryController {
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.millis(500),
-                        event -> {
-                            timeNow.setText(timeFormat.format(System.currentTimeMillis()));
-                        }
+                        event -> timeNow.setText(timeFormat.format(System.currentTimeMillis()))
                 )
         );
         timeline.setCycleCount(Animation.INDEFINITE);

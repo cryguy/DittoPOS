@@ -105,9 +105,7 @@ public class UserController {
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.millis(500),
-                        event -> {
-                            timeNow.setText(timeFormat.format(System.currentTimeMillis()));
-                        }
+                        event -> timeNow.setText(timeFormat.format(System.currentTimeMillis()))
                 )
         );
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -148,6 +146,8 @@ public class UserController {
                 UserManagement.getInstance().users.remove(usernameTxt.getText());
             populateUsers();
         });
+
+        // Choose Image to save
         chooseImage.setOnMouseClicked(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().addAll(
@@ -163,7 +163,7 @@ public class UserController {
             }
         });
 
-
+        // Handlers for sidebar
         sidebarMenu.setOnMouseClicked(event -> hideMenu(sidebarMenu));
 
         backBtn.setOnAction(event ->
@@ -173,6 +173,10 @@ public class UserController {
         sideBar.setOnAction(event ->
                 showMenu(sidebarMenu)
         );
+
+
+        // sidebar navigation
+
         salesBtn.setOnMouseClicked(event -> Main.changeScene("SalesScreen.fxml"));
         prodBtn.setOnMouseClicked(event ->
                 Main.changeScene("ProductManagement.fxml")
@@ -195,7 +199,7 @@ public class UserController {
     }
 
 
-    void populateUsers() {
+    private void populateUsers() {
         userList.getChildren().clear();
         UserManagement.getInstance().users.forEach((s, user) -> {
             Button button = new Button(user.toString());

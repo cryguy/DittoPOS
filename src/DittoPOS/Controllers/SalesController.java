@@ -267,9 +267,7 @@ public class SalesController {
                         button.setMinHeight(80);
                         button.setMinWidth(304);
 
-                        button.setOnMouseClicked(event -> {
-                            currentPressed = saleProduct;
-                        });
+                        button.setOnMouseClicked(event -> currentPressed = saleProduct);
 
 
                         listReceipt.getChildren().add(button);

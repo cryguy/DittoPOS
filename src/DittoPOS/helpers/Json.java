@@ -6,7 +6,6 @@ import DittoPOS.products.ProductManagement;
 import DittoPOS.reports.CashFlow;
 import DittoPOS.sales.ReceiptManagement;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 
 public class Json {
@@ -51,10 +50,6 @@ public class Json {
 
     public static String printString() {
         return new Gson().toJson(new Json());
-    }
-
-    public static void prettyPrint() {
-        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(new Json()));
     }
 
 
